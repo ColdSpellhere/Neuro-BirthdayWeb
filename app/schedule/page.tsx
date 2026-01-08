@@ -1,0 +1,339 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Clock, CheckCircle2, Circle } from "lucide-react"
+import { motion } from "framer-motion"
+import { cn } from "@/lib/utils"
+
+// 活动数据结构 - 使用 ISO 8601 格式的北京时间
+interface ScheduleEvent {
+  timestamp: string // ISO 8601 格式: "2026-12-19T14:00:00"
+  title: string
+  description: string
+  durationMinutes?: number // 可选：活动持续时间（分钟），如果不提供则以下一个活动开始时间为结束时间
+}
+
+// Mock Data - 跨多日的活动数据（北京时间 UTC+8）
+const scheduleEvents: ScheduleEvent[] = [
+  {
+    timestamp: "2026-01-07T20:00:00",
+    title: "预热直播",
+    description: "提前一天的预热活动，回顾 Neuro 的精彩瞬间",
+    durationMinutes: 60,
+  },
+  {
+    timestamp: "2026-01-07T22:00:00",
+    title: "暖场",
+    description: "观众入场，背景音乐播放，营造节日氛围",
+    durationMinutes: 120,
+  },
+  {
+    timestamp: "2026-12-19T14:00:00",
+    title: "正片开始",
+    description: "Neuro-Sama 生日特别直播正式开始，开场致辞",
+  },
+  {
+    timestamp: "2026-12-19T16:00:00",
+    title: "连线环节",
+    description: "与特邀嘉宾连线互动，分享有趣的故事",
+  },
+  {
+    timestamp: "2026-12-19T18:00:00",
+    title: "生日蛋糕环节",
+    description: "特别准备的数字蛋糕仪式，全体祝福",
+  },
+  {
+    timestamp: "2026-12-19T20:00:00",
+    title: "主日程闭幕",
+    description: "感谢致辞，回顾精彩瞬间",
+  },
+  {
+    timestamp: "2026-12-20T14:00:00",
+    title: "社区回顾",
+    description: "社区成员分享庆典精彩片段和感想",
+    durationMinutes: 180,
+  },
+]
+
+// 获取北京时间（UTC+8）
+function getBeijingTime(): Date {
+  const now = new Date()
+  // 将当前时间转换为 UTC，然后加上 8 小时得到北京时间
+  const utcTime = now.getTime() + now.getTimezoneOffset() * 60000
+  const beijingTime = new Date(utcTime + 8 * 3600000)
+  return beijingTime
+}
+
+// 将 ISO 字符串解析为北京时间的 Date 对象
+function parseBeijingTimestamp(timestamp: string): Date {
+  // 假设输入的 timestamp 是北京时间的本地时间表示
+  // 我们需要将其视为 UTC+8 的时间
+  const date = new Date(timestamp)
+  return date
+}
+
+// 格式化显示日期和时间（北京时间）
+function formatBeijingDateTime(timestamp: string): { date: string; time: string; fullDate: string } {
+  const date = parseBeijingTimestamp(timestamp)
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hours = date.getHours().toString().padStart(2, '0')
+  const minutes = date.getMinutes().toString().padStart(2, '0')
+  
+  return {
+    date: `${month}月${day}日`,
+    time: `${hours}:${minutes}`,
+    fullDate: `${date.getFullYear()}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`,
+  }
+}
+
+// 计算活动状态
+type EventStatus = "completed" | "active" | "upcoming"
+
+function calculateEventStatus(
+  event: ScheduleEvent,
+  nextEvent: ScheduleEvent | null,
+  currentBeijingTime: Date
+): EventStatus {
+  const eventStart = parseBeijingTimestamp(event.timestamp)
+  
+  // 计算活动结束时间
+  let eventEnd: Date
+  if (event.durationMinutes) {
+    eventEnd = new Date(eventStart.getTime() + event.durationMinutes * 60000)
+  } else if (nextEvent) {
+    eventEnd = parseBeijingTimestamp(nextEvent.timestamp)
+  } else {
+    // 如果是最后一个活动且没有指定持续时间，默认持续 2 小时
+    eventEnd = new Date(eventStart.getTime() + 2 * 3600000)
+  }
+  
+  const currentTime = currentBeijingTime.getTime()
+  const startTime = eventStart.getTime()
+  const endTime = eventEnd.getTime()
+  
+  if (currentTime >= endTime) {
+    return "completed"
+  } else if (currentTime >= startTime && currentTime < endTime) {
+    return "active"
+  } else {
+    return "upcoming"
+  }
+}
+
+// 按日期分组活动
+function groupEventsByDate(events: ScheduleEvent[]): Map<string, ScheduleEvent[]> {
+  const grouped = new Map<string, ScheduleEvent[]>()
+  
+  events.forEach((event) => {
+    const { fullDate } = formatBeijingDateTime(event.timestamp)
+    if (!grouped.has(fullDate)) {
+      grouped.set(fullDate, [])
+    }
+    grouped.get(fullDate)!.push(event)
+  })
+  
+  return grouped
+}
+
+export default function SchedulePage() {
+  // 使用 state 存储当前北京时间，避免 hydration mismatch
+  const [currentBeijingTime, setCurrentBeijingTime] = useState<Date | null>(null)
+  
+  // 客户端挂载后初始化时间，并每分钟更新一次
+  useEffect(() => {
+    setCurrentBeijingTime(getBeijingTime())
+    
+    const interval = setInterval(() => {
+      setCurrentBeijingTime(getBeijingTime())
+    }, 60000) // 每分钟更新一次
+    
+    return () => clearInterval(interval)
+  }, [])
+  
+  // 服务端渲染或首次渲染时显示加载状态
+  if (!currentBeijingTime) {
+    return (
+      <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+        <div className="text-gray-400">加载日程中...</div>
+      </div>
+    )
+  }
+  
+  // 按日期分组
+  const groupedEvents = groupEventsByDate(scheduleEvents)
+  const sortedDates = Array.from(groupedEvents.keys()).sort()
+  
+  return (
+    <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h1 className="text-5xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
+              活动日程
+            </span>
+          </h1>
+          <p className="text-gray-400 text-lg">
+            所有时间均为北京时间 (UTC+8)
+          </p>
+          <p className="text-cyan-400 text-sm mt-2">
+            当前时间: {currentBeijingTime.getMonth() + 1}月{currentBeijingTime.getDate()}日 {currentBeijingTime.getHours().toString().padStart(2, '0')}:{currentBeijingTime.getMinutes().toString().padStart(2, '0')}
+          </p>
+        </motion.div>
+
+        {/* 按日期渲染时间轴 */}
+        {sortedDates.map((dateKey, dateIndex) => {
+          const eventsOnThisDay = groupedEvents.get(dateKey)!
+          const { date } = formatBeijingDateTime(eventsOnThisDay[0].timestamp)
+          
+          return (
+            <div key={dateKey} className="mb-12">
+              {/* 日期分隔符 */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: dateIndex * 0.1 }}
+                className="mb-8"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="glass-effect px-6 py-3 rounded-full border border-pink-500/30">
+                    <span className="text-xl font-bold bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
+                      {date}
+                    </span>
+                  </div>
+                  <div className="flex-1 h-px bg-gradient-to-r from-pink-500/50 to-transparent" />
+                </div>
+              </motion.div>
+
+              {/* 该日期的时间轴 */}
+              <div className="relative">
+                {/* Vertical Line */}
+                <div className="absolute left-[24px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-pink-500 via-purple-500 to-cyan-400" />
+
+                {/* Timeline Items */}
+                <div className="space-y-8">
+                  {eventsOnThisDay.map((event, eventIndex) => {
+                    const nextEvent = eventIndex < eventsOnThisDay.length - 1 
+                      ? eventsOnThisDay[eventIndex + 1] 
+                      : null
+                    const status = calculateEventStatus(event, nextEvent, currentBeijingTime)
+                    const { time } = formatBeijingDateTime(event.timestamp)
+                    
+                    return (
+                      <motion.div
+                        key={event.timestamp}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: (dateIndex * 0.1) + (eventIndex * 0.1) }}
+                        className="relative flex gap-2 group"
+                      >
+                        {/* Time & Status Icon */}
+                        <div className="flex flex-col items-center gap-2 flex-shrink-0 ml-8">
+                          {/* Icon */}
+                          <div className={cn(
+                            "w-8 h-8 rounded-full flex items-center justify-center z-10 transition-all",
+                            status === "completed" && "bg-gray-600",
+                            status === "active" && "bg-pink-500 animate-glow",
+                            status === "upcoming" && "bg-slate-700"
+                          )}>
+                            {status === "completed" && (
+                              <CheckCircle2 className="w-5 h-5 text-gray-400" />
+                            )}
+                            {status === "active" && (
+                              <Clock className="w-5 h-5 text-white animate-pulse" />
+                            )}
+                            {status === "upcoming" && (
+                              <Circle className="w-5 h-5 text-gray-500" />
+                            )}
+                          </div>
+
+                          {/* Time Display */}
+                          <div className={cn(
+                            "text-sm font-bold px-3 py-1 rounded-full whitespace-nowrap",
+                            status === "completed" && "text-gray-500",
+                            status === "active" && "text-pink-400 bg-pink-500/20",
+                            status === "upcoming" && "text-gray-400"
+                          )}>
+                            {time}
+                          </div>
+                        </div>
+
+                        {/* Event Card */}
+                        <a
+                          href="https://space.bilibili.com/3546729368520811"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1"
+                        >
+                          <Card className={cn(
+                            "transition-all cursor-pointer hover:scale-[1.02]",
+                            status === "completed" && "opacity-50 glass-effect hover:opacity-60",
+                            status === "active" && "neon-glow-pink glass-effect border-pink-500/50",
+                            status === "upcoming" && "glass-effect border-white/10 hover:border-white/20"
+                          )}>
+                            <CardContent className="p-6">
+                              <h3 className={cn(
+                                "text-xl font-bold mb-2",
+                                status === "completed" && "text-gray-400",
+                                status === "active" && "text-pink-400",
+                                status === "upcoming" && "text-white"
+                              )}>
+                                {event.title}
+                                {status === "active" && (
+                                  <span className="ml-2 text-xs px-2 py-1 rounded-full bg-pink-500/20 text-pink-400">
+                                    进行中
+                                  </span>
+                                )}
+                              </h3>
+                              <p className={cn(
+                                "text-sm",
+                                status === "completed" && "text-gray-500",
+                                status === "active" && "text-gray-300",
+                                status === "upcoming" && "text-gray-400"
+                              )}>
+                                {event.description}
+                              </p>
+                              {event.durationMinutes && (
+                                <p className="text-xs text-gray-500 mt-2">
+                                  预计时长: {event.durationMinutes} 分钟
+                                </p>
+                              )}
+                            </CardContent>
+                          </Card>
+                        </a>
+                      </motion.div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          )
+        })}
+
+        {/* Footer Note */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="mt-16 text-center"
+        >
+          <Card className="glass-effect inline-block">
+            <CardContent className="p-6">
+              <p className="text-gray-400 text-sm">
+                💡 时间可能根据实际情况调整，请以直播间公告为准
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+    </div>
+  )
+}
