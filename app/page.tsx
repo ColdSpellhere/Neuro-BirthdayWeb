@@ -299,7 +299,7 @@ export default function HomePage() {
             </CardContent>
           </Card>
           <p className="text-gray-400 text-lg leading-relaxed mt-6">
-            生日会最终的视频成品会在12/19当天以"直播播放视频"的形式亮相，并于直播结束后上传完整视频。往期生日会视频参考：
+            生日会最终的视频成品会在12.19当天以"直播播放视频"的形式亮相，并于直播结束后上传完整视频。往期生日会视频参考：
           </p>
           
           {/* 往期视频卡片 */}

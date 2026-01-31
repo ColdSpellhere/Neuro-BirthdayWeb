@@ -12,47 +12,17 @@ interface ScheduleEvent {
   title: string
   description: string
   durationMinutes?: number // 可选：活动持续时间（分钟），如果不提供则以下一个活动开始时间为结束时间
+  link?: string // 可选：活动跳转链接
 }
 
 // Mock Data - 跨多日的活动数据（北京时间 UTC+8）
 const scheduleEvents: ScheduleEvent[] = [
   {
-    timestamp: "2026-01-07T20:00:00",
-    title: "预热直播",
-    description: "提前一天的预热活动，回顾 Neuro 的精彩瞬间",
-    durationMinutes: 60,
-  },
-  {
-    timestamp: "2026-01-07T22:00:00",
-    title: "暖场",
-    description: "观众入场，背景音乐播放，营造节日氛围",
-    durationMinutes: 120,
-  },
-  {
-    timestamp: "2026-12-19T14:00:00",
-    title: "正片开始",
-    description: "Neuro-Sama 生日特别直播正式开始，开场致辞",
-  },
-  {
-    timestamp: "2026-12-19T16:00:00",
-    title: "连线环节",
-    description: "与特邀嘉宾连线互动，分享有趣的故事",
-  },
-  {
-    timestamp: "2026-12-19T18:00:00",
-    title: "生日蛋糕环节",
-    description: "特别准备的数字蛋糕仪式，全体祝福",
-  },
-  {
-    timestamp: "2026-12-19T20:00:00",
-    title: "主日程闭幕",
-    description: "感谢致辞，回顾精彩瞬间",
-  },
-  {
-    timestamp: "2026-12-20T14:00:00",
-    title: "社区回顾",
-    description: "社区成员分享庆典精彩片段和感想",
-    durationMinutes: 180,
+    timestamp: "2026-01-19T23:59:59",
+    title: "Neuro-Sama 2026年B站社群生日会-前期调查",
+    description: "对上期生日会的工作人员进行本期生日会的参与意愿调查。",
+    durationMinutes: 18720,
+    link: "https://wj.qq.com/s2/25563205/fh82/",
   },
 ]
 
@@ -119,6 +89,29 @@ function calculateEventStatus(
     return "active"
   } else {
     return "upcoming"
+  }
+}
+
+// 格式化持续时间显示
+function formatDuration(minutes: number): string {
+  if (minutes < 60) {
+    return `${minutes} 分钟`
+  } else if (minutes < 1440) {
+    // 小于24小时，显示小时
+    const hours = Math.floor(minutes / 60)
+    const remainingMinutes = minutes % 60
+    if (remainingMinutes === 0) {
+      return `${hours} 小时`
+    }
+    return `${hours} 小时 ${remainingMinutes} 分钟`
+  } else {
+    // 大于等于24小时，显示天数
+    const days = Math.floor(minutes / 1440)
+    const remainingHours = Math.floor((minutes % 1440) / 60)
+    if (remainingHours === 0) {
+      return `${days} 天`
+    }
+    return `${days} 天 ${remainingHours} 小时`
   }
 }
 
@@ -266,18 +259,19 @@ export default function SchedulePage() {
                         </div>
 
                         {/* Event Card */}
-                        <a
-                          href="https://space.bilibili.com/3546729368520811"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex-1"
-                        >
-                          <Card className={cn(
-                            "transition-all cursor-pointer hover:scale-[1.02]",
-                            status === "completed" && "opacity-50 glass-effect hover:opacity-60",
-                            status === "active" && "neon-glow-pink glass-effect border-pink-500/50",
-                            status === "upcoming" && "glass-effect border-white/10 hover:border-white/20"
-                          )}>
+                        {event.link ? (
+                          <a
+                            href={event.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1"
+                          >
+                            <Card className={cn(
+                              "transition-all cursor-pointer hover:scale-[1.02]",
+                              status === "completed" && "opacity-50 glass-effect hover:opacity-60",
+                              status === "active" && "neon-glow-pink glass-effect border-pink-500/50",
+                              status === "upcoming" && "glass-effect border-white/10 hover:border-white/20"
+                            )}>
                             <CardContent className="p-6">
                               <h3 className={cn(
                                 "text-xl font-bold mb-2",
@@ -302,12 +296,51 @@ export default function SchedulePage() {
                               </p>
                               {event.durationMinutes && (
                                 <p className="text-xs text-gray-500 mt-2">
-                                  预计时长: {event.durationMinutes} 分钟
+                                  预计时长: {formatDuration(event.durationMinutes)}
                                 </p>
                               )}
                             </CardContent>
                           </Card>
                         </a>
+                        ) : (
+                          <div className="flex-1">
+                            <Card className={cn(
+                              "transition-all",
+                              status === "completed" && "opacity-50 glass-effect",
+                              status === "active" && "neon-glow-pink glass-effect border-pink-500/50",
+                              status === "upcoming" && "glass-effect border-white/10"
+                            )}>
+                            <CardContent className="p-6">
+                              <h3 className={cn(
+                                "text-xl font-bold mb-2",
+                                status === "completed" && "text-gray-400",
+                                status === "active" && "text-pink-400",
+                                status === "upcoming" && "text-white"
+                              )}>
+                                {event.title}
+                                {status === "active" && (
+                                  <span className="ml-2 text-xs px-2 py-1 rounded-full bg-pink-500/20 text-pink-400">
+                                    进行中
+                                  </span>
+                                )}
+                              </h3>
+                              <p className={cn(
+                                "text-sm",
+                                status === "completed" && "text-gray-500",
+                                status === "active" && "text-gray-300",
+                                status === "upcoming" && "text-gray-400"
+                              )}>
+                                {event.description}
+                              </p>
+                              {event.durationMinutes && (
+                                <p className="text-xs text-gray-500 mt-2">
+                                  预计时长: {formatDuration(event.durationMinutes)}
+                                </p>
+                              )}
+                            </CardContent>
+                          </Card>
+                          </div>
+                        )}
                       </motion.div>
                     )
                   })}
