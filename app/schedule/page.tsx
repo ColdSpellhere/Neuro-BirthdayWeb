@@ -6,16 +6,23 @@ import { Clock, CheckCircle2, Circle } from "lucide-react"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
-// 活动数据结构 - 使用 ISO 8601 格式的北京时间
+/**
+ * 日程事件数据模型
+ * @property {string} timestamp - 事件开始时间，采用 ISO 8601 格式（UTC+8 北京时间）
+ * @property {string} title - 事件标题
+ * @property {string} description - 事件描述
+ * @property {number} [durationMinutes] - 可选，事件预计持续时间（单位：分钟）。未指定时将使用下个事件开始时间作为结束时间
+ * @property {string} [link] - 可选，事件相关链接
+ */
 interface ScheduleEvent {
-  timestamp: string // ISO 8601 格式: "2026-12-19T14:00:00"
+  timestamp: string
   title: string
   description: string
-  durationMinutes?: number // 可选：活动持续时间（分钟），如果不提供则以下一个活动开始时间为结束时间
-  link?: string // 可选：活动跳转链接
+  durationMinutes?: number
+  link?: string
 }
 
-// Mock Data - 跨多日的活动数据（北京时间 UTC+8）
+/** 日程事件数据集合（跨多日） */
 const scheduleEvents: ScheduleEvent[] = [
   {
     timestamp: "2026-01-19T23:59:59+08:00",
@@ -26,7 +33,12 @@ const scheduleEvents: ScheduleEvent[] = [
   },
 ]
 
-// 统一北京时间格式化工具
+/**
+ * 北京时间格式化工具
+ * 将时间戳转换为北京时区的可读格式
+ * @param {string | Date} timestamp - ISO 8601 时间戳或 Date 对象
+ * @returns {Object} 包含日期、时间及完整日期字符串
+ */
 function formatBeijingDateTime(timestamp: string | Date) : { date: string; time :string; fullDate: string} {
   const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp;
 
@@ -37,9 +49,16 @@ function formatBeijingDateTime(timestamp: string | Date) : { date: string; time 
   return { date: dateStr, time, fullDate };
 }
 
-// 计算活动状态
+/** 事件进行状态枚举 */
 type EventStatus = "completed" | "active" | "upcoming"
 
+/**
+ * 计算事件当前状态
+ * @param {ScheduleEvent} event - 目标事件
+ * @param {ScheduleEvent | null} nextEvent - 下一个事件（用于推断结束时间）
+ * @param {Date} currentTime - 当前时间
+ * @returns {EventStatus} 事件状态
+ */
 function calculateEventStatus(
   event: ScheduleEvent,
   nextEvent: ScheduleEvent | null,
@@ -47,6 +66,7 @@ function calculateEventStatus(
 ): EventStatus {
   const eventStart = new Date(event.timestamp)
 
+  // 确定事件结束时间：优先使用 durationMinutes，其次使用下一事件开始时间，最后默认 2 小时
   let eventEnd: Date
   if (event.durationMinutes) {
     eventEnd = new Date(eventStart.getTime() + event.durationMinutes * 60000)
@@ -56,7 +76,7 @@ function calculateEventStatus(
     eventEnd = new Date(eventStart.getTime() + 2 * 3600000)
   }
 
-  // 统一转为毫无时区概念的绝对毫秒数进行大小比较
+  // 将所有时间统一转换为时间戳进行比较
   const current = currentTime.getTime()
   const start = eventStart.getTime()
   const end = eventEnd.getTime()
@@ -66,7 +86,11 @@ function calculateEventStatus(
   return "upcoming"
 }
 
-// 格式化持续时间显示
+/**
+ * 格式化事件持续时间为可读文本
+ * @param {number} minutes - 时长（单位：分钟）
+ * @returns {string} 格式化后的时长描述
+ */
 function formatDuration(minutes: number): string {
   if (minutes < 60) {
     return `${minutes} 分钟`
@@ -89,7 +113,11 @@ function formatDuration(minutes: number): string {
   }
 }
 
-// 按日期分组活动
+/**
+ * 按日期对事件进行分组
+ * @param {ScheduleEvent[]} events - 事件数组
+ * @returns {Map<string, ScheduleEvent[]>} 日期为键，该日事件数组为值的 Map
+ */
 function groupEventsByDate(events: ScheduleEvent[]): Map<string, ScheduleEvent[]> {
   const grouped = new Map<string, ScheduleEvent[]>()
   
@@ -105,21 +133,21 @@ function groupEventsByDate(events: ScheduleEvent[]): Map<string, ScheduleEvent[]
 }
 
 export default function SchedulePage() {
-  // 使用 state 存储当前北京时间，避免 hydration mismatch
+  // 使用 State 存储当前北京时间，避免服务端渲染与客户端渲染的 hydration 不匹配
   const [currentTime, setCurrentTime] = useState<Date | null>(null)
   
-  // 客户端挂载后初始化时间，并每分钟更新一次
+  // 在客户端挂载后初始化时间，并设置定时器每分钟更新一次
   useEffect(() => {
     setCurrentTime(new Date())
     
     const interval = setInterval(() => {
       setCurrentTime(new Date())
-    }, 60000) // 每分钟更新一次
+    }, 60000)
     
     return () => clearInterval(interval)
   }, [])
   
-  // 服务端渲染或首次渲染时显示加载状态
+  // 当 currentTime 未初始化时，显示加载状态
   if (!currentTime) {
     return (
       <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
@@ -129,7 +157,7 @@ export default function SchedulePage() {
   }
   
   const currentBeijingDisplay = formatBeijingDateTime(currentTime);
-  // 按日期分组
+  // 按日期分组并排序事件
   const groupedEvents = groupEventsByDate(scheduleEvents)
   const sortedDates = Array.from(groupedEvents.keys()).sort()
   
@@ -156,14 +184,14 @@ export default function SchedulePage() {
           </p>
         </motion.div>
 
-        {/* 按日期渲染时间轴 */}
+        {/* 按日期分组渲染时间轴 */}
         {sortedDates.map((dateKey, dateIndex) => {
           const eventsOnThisDay = groupedEvents.get(dateKey)!
           const { date } = formatBeijingDateTime(eventsOnThisDay[0].timestamp)
           
           return (
             <div key={dateKey} className="mb-12">
-              {/* 日期分隔符 */}
+              {/* 日期标签 */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -180,12 +208,12 @@ export default function SchedulePage() {
                 </div>
               </motion.div>
 
-              {/* 该日期的时间轴 */}
+              {/* 该日期的时间轴容器 */}
               <div className="relative">
-                {/* Vertical Line */}
+                {/* 垂直分隔线 */}
                 <div className="absolute left-[24px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-pink-500 via-purple-500 to-cyan-400" />
 
-                {/* Timeline Items */}
+                {/* 时间轴事件列表 */}
                 <div className="space-y-8">
                   {eventsOnThisDay.map((event, eventIndex) => {
                     const nextEvent = eventIndex < eventsOnThisDay.length - 1 
@@ -202,9 +230,9 @@ export default function SchedulePage() {
                         transition={{ duration: 0.5, delay: (dateIndex * 0.1) + (eventIndex * 0.1) }}
                         className="relative flex gap-2 group"
                       >
-                        {/* Time & Status Icon */}
+                        {/* 时间与状态指示器 */}
                         <div className="flex flex-col items-center gap-2 flex-shrink-0 ml-8">
-                          {/* Icon */}
+                          {/* 状态图标 */}
                           <div className={cn(
                             "w-8 h-8 rounded-full flex items-center justify-center z-10 transition-all",
                             status === "completed" && "bg-gray-600",
@@ -222,7 +250,7 @@ export default function SchedulePage() {
                             )}
                           </div>
 
-                          {/* Time Display */}
+                          {/* 时间显示 */}
                           <div className={cn(
                             "text-sm font-bold px-3 py-1 rounded-full whitespace-nowrap",
                             status === "completed" && "text-gray-500",
@@ -233,7 +261,7 @@ export default function SchedulePage() {
                           </div>
                         </div>
 
-                        {/* Event Card */}
+                        {/* 事件卡片 */}
                         {event.link ? (
                           <a
                             href={event.link}
@@ -325,7 +353,7 @@ export default function SchedulePage() {
           )
         })}
 
-        {/* Footer Note */}
+        {/* 页脚提示 */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

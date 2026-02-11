@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, ArrowRight, Search, X, Clock, TrendingUp, Filter } from "lucide-react"
+import { Calendar, ArrowRight, Search, X, TrendingUp, Filter } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
 
@@ -76,46 +76,23 @@ export default function NewsPage() {
   const [selectedCategory, setSelectedCategory] = useState("全部")
   const [searchQuery, setSearchQuery] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
-  const [selectedNews, setSelectedNews] = useState<(typeof newsData[0] & { views: number }) | null>(null)
-  const [newsViews, setNewsViews] = useState<Record<number, number>>({})
+  const [selectedNews, setSelectedNews] = useState<typeof newsData[0] | null>(null)
 
-  // 从 localStorage 加载浏览量数据
-  useEffect(() => {
-    const savedViews = localStorage.getItem('news_views')
-    if (savedViews) {
-      setNewsViews(JSON.parse(savedViews))
-    }
-  }, [])
-
-  // 点击新闻时增加浏览量
-  const handleNewsClick = (news: typeof newsData[0] & { views: number }) => {
-    setNewsViews(prev => {
-      const newViews = { ...prev, [news.id]: (prev[news.id] || 0) + 1 }
-      localStorage.setItem('news_views', JSON.stringify(newViews))
-      return newViews
-    })
-    // 设置 selectedNews 时使用更新后的浏览量
-    setSelectedNews({ ...news, views: (newsViews[news.id] || 0) + 1 })
+  // 点击新闻时打开详情
+  const handleNewsClick = (news: typeof newsData[0]) => {
+    setSelectedNews(news)
   }
-
-  // 合并新闻数据和浏览量
-  const newsWithViews = useMemo(() => {
-    return newsData.map(news => ({
-      ...news,
-      views: newsViews[news.id] || 0
-    }))
-  }, [newsViews])
 
   // Filter and search logic
   const filteredNews = useMemo(() => {
-    return newsWithViews.filter((news) => {
+    return newsData.filter((news) => {
       const matchesCategory = selectedCategory === "全部" || news.category === selectedCategory
       const matchesSearch = 
         news.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         news.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
       return matchesCategory && matchesSearch
     })
-  }, [newsWithViews, selectedCategory, searchQuery])
+  }, [selectedCategory, searchQuery])
 
   // Pagination logic
   const totalPages = Math.ceil(filteredNews.length / ITEMS_PER_PAGE)
@@ -125,7 +102,7 @@ export default function NewsPage() {
   }, [filteredNews, currentPage])
 
   // Featured news
-  const featuredNews = newsWithViews.filter(news => news.featured).slice(0, 3)
+  const featuredNews = newsData.filter(news => news.featured).slice(0, 3)
 
   // Reset page when filters change
   const handleCategoryChange = (category: string) => {
@@ -217,11 +194,7 @@ export default function NewsPage() {
                       <p className="text-gray-400 text-sm line-clamp-2 mb-3">
                         {news.excerpt}
                       </p>
-                      <div className="flex items-center justify-between text-xs text-gray-500">
-                        <div className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          <span>{news.views.toLocaleString()} views</span>
-                        </div>
+                      <div className="flex items-center justify-end">
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-pink-500" />
                       </div>
                     </CardContent>
@@ -341,15 +314,9 @@ export default function NewsPage() {
 
                     {/* Content */}
                     <CardHeader>
-                      <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
-                        <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4" />
-                          <span>{news.date}</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-xs">
-                          <Clock className="w-3 h-3" />
-                          <span>{news.views.toLocaleString()}</span>
-                        </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-400 mb-2">
+                        <Calendar className="w-4 h-4" />
+                        <span>{news.date}</span>
                       </div>
                       <CardTitle className="text-xl line-clamp-2 group-hover:text-pink-400 transition-colors">
                         {news.title}
@@ -467,15 +434,9 @@ export default function NewsPage() {
                     <h2 className="text-3xl font-bold mb-3">
                       {selectedNews.title}
                     </h2>
-                    <div className="flex items-center gap-4 text-sm text-gray-400">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4" />
-                        <span>{selectedNews.date}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4" />
-                        <span>{selectedNews.views.toLocaleString()} views</span>
-                      </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                      <Calendar className="w-4 h-4" />
+                      <span>{selectedNews.date}</span>
                     </div>
                   </div>
                   <button
