@@ -18,7 +18,7 @@ interface ScheduleEvent {
 // Mock Data - 跨多日的活动数据（北京时间 UTC+8）
 const scheduleEvents: ScheduleEvent[] = [
   {
-    timestamp: "2026-01-19T23:59:59",
+    timestamp: "2026-01-19T23:59:59+08:00",
     title: "Neuro-Sama 2026年B站社群生日会-前期调查",
     description: "对上期生日会的工作人员进行本期生日会的参与意愿调查。",
     durationMinutes: 18720,
@@ -26,36 +26,15 @@ const scheduleEvents: ScheduleEvent[] = [
   },
 ]
 
-// 获取北京时间（UTC+8）
-function getBeijingTime(): Date {
-  const now = new Date()
-  // 将当前时间转换为 UTC，然后加上 8 小时得到北京时间
-  const utcTime = now.getTime() + now.getTimezoneOffset() * 60000
-  const beijingTime = new Date(utcTime + 8 * 3600000)
-  return beijingTime
-}
+// 统一北京时间格式化工具
+function formatBeijingDateTime(timestamp: string | Date) : { date: string; time :string; fullDate: string} {
+  const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp;
 
-// 将 ISO 字符串解析为北京时间的 Date 对象
-function parseBeijingTimestamp(timestamp: string): Date {
-  // 假设输入的 timestamp 是北京时间的本地时间表示
-  // 我们需要将其视为 UTC+8 的时间
-  const date = new Date(timestamp)
-  return date
-}
-
-// 格式化显示日期和时间（北京时间）
-function formatBeijingDateTime(timestamp: string): { date: string; time: string; fullDate: string } {
-  const date = parseBeijingTimestamp(timestamp)
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-  const hours = date.getHours().toString().padStart(2, '0')
-  const minutes = date.getMinutes().toString().padStart(2, '0')
-  
-  return {
-    date: `${month}月${day}日`,
-    time: `${hours}:${minutes}`,
-    fullDate: `${date.getFullYear()}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`,
-  }
+  const options = { timeZone: 'Asia/Shanghai'};
+  const fullDate = date.toLocaleDateString('zh-CN', { ...options, year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+  const dateStr = date.toLocaleDateString('zh-CN', { ...options, month: 'long', day: 'numeric' });
+  const time = date.toLocaleTimeString('zh-CN', { ...options,hour12: false, hour: '2-digit', minute: '2-digit' });
+  return { date: dateStr, time, fullDate };
 }
 
 // 计算活动状态
@@ -64,32 +43,27 @@ type EventStatus = "completed" | "active" | "upcoming"
 function calculateEventStatus(
   event: ScheduleEvent,
   nextEvent: ScheduleEvent | null,
-  currentBeijingTime: Date
+  currentTime: Date
 ): EventStatus {
-  const eventStart = parseBeijingTimestamp(event.timestamp)
-  
-  // 计算活动结束时间
+  const eventStart = new Date(event.timestamp)
+
   let eventEnd: Date
   if (event.durationMinutes) {
     eventEnd = new Date(eventStart.getTime() + event.durationMinutes * 60000)
   } else if (nextEvent) {
-    eventEnd = parseBeijingTimestamp(nextEvent.timestamp)
+    eventEnd = new Date(nextEvent.timestamp)
   } else {
-    // 如果是最后一个活动且没有指定持续时间，默认持续 2 小时
     eventEnd = new Date(eventStart.getTime() + 2 * 3600000)
   }
-  
-  const currentTime = currentBeijingTime.getTime()
-  const startTime = eventStart.getTime()
-  const endTime = eventEnd.getTime()
-  
-  if (currentTime >= endTime) {
-    return "completed"
-  } else if (currentTime >= startTime && currentTime < endTime) {
-    return "active"
-  } else {
-    return "upcoming"
-  }
+
+  // 统一转为毫无时区概念的绝对毫秒数进行大小比较
+  const current = currentTime.getTime()
+  const start = eventStart.getTime()
+  const end = eventEnd.getTime()
+
+  if (current >= end) return "completed"
+  if (current >= start && current < end) return "active"
+  return "upcoming"
 }
 
 // 格式化持续时间显示
@@ -132,21 +106,21 @@ function groupEventsByDate(events: ScheduleEvent[]): Map<string, ScheduleEvent[]
 
 export default function SchedulePage() {
   // 使用 state 存储当前北京时间，避免 hydration mismatch
-  const [currentBeijingTime, setCurrentBeijingTime] = useState<Date | null>(null)
+  const [currentTime, setCurrentTime] = useState<Date | null>(null)
   
   // 客户端挂载后初始化时间，并每分钟更新一次
   useEffect(() => {
-    setCurrentBeijingTime(getBeijingTime())
+    setCurrentTime(new Date())
     
     const interval = setInterval(() => {
-      setCurrentBeijingTime(getBeijingTime())
+      setCurrentTime(new Date())
     }, 60000) // 每分钟更新一次
     
     return () => clearInterval(interval)
   }, [])
   
   // 服务端渲染或首次渲染时显示加载状态
-  if (!currentBeijingTime) {
+  if (!currentTime) {
     return (
       <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
         <div className="text-gray-400">加载日程中...</div>
@@ -154,6 +128,7 @@ export default function SchedulePage() {
     )
   }
   
+  const currentBeijingDisplay = formatBeijingDateTime(currentTime);
   // 按日期分组
   const groupedEvents = groupEventsByDate(scheduleEvents)
   const sortedDates = Array.from(groupedEvents.keys()).sort()
@@ -177,7 +152,7 @@ export default function SchedulePage() {
             所有时间均为北京时间 (UTC+8)
           </p>
           <p className="text-cyan-400 text-sm mt-2">
-            当前时间: {currentBeijingTime.getMonth() + 1}月{currentBeijingTime.getDate()}日 {currentBeijingTime.getHours().toString().padStart(2, '0')}:{currentBeijingTime.getMinutes().toString().padStart(2, '0')}
+            当前时间: {currentBeijingDisplay.date} {currentBeijingDisplay.time}
           </p>
         </motion.div>
 
@@ -216,7 +191,7 @@ export default function SchedulePage() {
                     const nextEvent = eventIndex < eventsOnThisDay.length - 1 
                       ? eventsOnThisDay[eventIndex + 1] 
                       : null
-                    const status = calculateEventStatus(event, nextEvent, currentBeijingTime)
+                    const status = calculateEventStatus(event, nextEvent, currentTime)
                     const { time } = formatBeijingDateTime(event.timestamp)
                     
                     return (
