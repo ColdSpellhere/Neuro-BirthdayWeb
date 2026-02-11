@@ -66,84 +66,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Quick Preview Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          {/* Latest News Card */}
-          <Card className="glass-effect hover:neon-glow-pink transition-all">
-                <CardHeader>
-                  <CardTitle className="text-2xl flex items-center gap-2">
-                    <span className="bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
-                      最新动态
-                    </span>
-                  </CardTitle>
-                </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Latest News Item */}
-              <div className="space-y-2">
-                <div className="text-sm text-cyan-400">2026-01-03</div>
-                <h3 className="text-xl font-bold text-white">
-                  🎉 活动日程正式公布！
-                </h3>
-                <p className="text-gray-400">
-                  完整的生日庆典活动日程已经确定，包含多场精彩直播和互动环节。为期一周的庆祝活动将为大家带来前所未有的体验！
-                </p>
-              </div>
-
-              {/* More News Link */}
-              <Link
-                href="/news"
-                className="inline-flex items-center text-pink-400 hover:text-pink-300 transition-colors pt-2"
-              >
-                更多新闻
-                <ArrowRight className="w-4 h-4 ml-1" />
-              </Link>
-            </CardContent>
-          </Card>
-
-          {/* Next Event Card */}
-          <Card className="glass-effect hover:neon-glow-cyan transition-all">
-            <CardHeader>
-                <CardTitle className="text-2xl flex items-center gap-2">
-                  <span className="bg-gradient-to-r from-cyan-400 to-pink-500 bg-clip-text text-transparent">
-                    下一场活动
-                  </span>
-                </CardTitle>
-              </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Next Event Item */}
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-cyan-400">
-                  <Calendar className="w-5 h-5" />
-                  <span className="text-lg font-semibold">2026-12-19 • 18:00 UTC+8</span>
-                </div>
-                <h3 className="text-xl font-bold text-white">
-                  开幕式直播
-                </h3>
-                <p className="text-gray-400">
-                  Neuro-Sama 生日庆典正式开启！与 Neuro 和 Vedal 一起开始这场盛大的庆祝活动。
-                </p>
-              </div>
-
-              {/* Full Schedule Link */}
-              <Link
-                href="/schedule"
-                className="inline-flex items-center text-cyan-400 hover:text-cyan-300 transition-colors pt-2"
-              >
-                完整日程
-                <ArrowRight className="w-4 h-4 ml-1" />
-              </Link>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </section>
-
       {/* About Neuro-Sama Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* Header */}
@@ -155,7 +77,7 @@ export default function HomePage() {
           className="text-center mb-16"
         >
           <div className="inline-block mb-6">
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-400 animate-glow mx-auto flex items-center justify-center overflow-hidden">
+            <div className="w-31 h-31 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-400 animate-glow mx-auto flex items-center justify-center overflow-hidden">
               {/* 替换为图片 */}
               <img
                 src="/neuro-avatar.png"

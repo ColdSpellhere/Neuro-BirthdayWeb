@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 const navItems = [
   { href: "/", label: "首页" },
   { href: "/participate", label: "参与" },
-  { href: "/schedule", label: "赛程" },
+  { href: "/schedule", label: "日程" },
   { href: "/news", label: "新闻" },
 ]
 
