@@ -189,18 +189,18 @@ export default function NewsPage() {
   }, [selectedNews, openPrevNews, openNextNews])
 
   return (
-    <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-16 px-4 sm:px-6 sm:py-20 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12 section-reveal">
-          <h1 className="text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
-              最新新闻
-            </span>
+        <div className="page-hero section-reveal">
+          <span className="page-kicker">信息中心</span>
+          <h1 className="text-4xl sm:text-5xl font-bold mt-4 mb-3">
+            <span className="title-gradient-tech">最新新闻</span>
           </h1>
-          <p className="text-gray-400 text-lg">
-            随时了解最新的公告和更新
+          <p className="page-subtitle">
+            实时同步活动公告、项目进展与关键更新。
           </p>
+          <div className="hero-divider" />
         </div>
 
         {/* Featured News Section */}
@@ -249,7 +249,7 @@ export default function NewsPage() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-400 text-sm line-clamp-2 mb-3">
+                      <p className="text-slate-300/90 text-sm line-clamp-2 mb-3">
                         {news.excerpt}
                       </p>
                       <div className="flex items-center justify-end">
@@ -365,16 +365,16 @@ export default function NewsPage() {
                     </CardHeader>
 
                     <CardContent className="flex-1 flex flex-col">
-                      <p className="text-gray-400 text-sm line-clamp-3 mb-4">
+                      <p className="text-slate-300/90 text-sm line-clamp-3 mb-4">
                         {news.excerpt}
                       </p>
 
                       {/* Read More Button */}
-                      <Button 
-                        variant="ghost" 
+                      <Button
+                        variant="ghost"
                         className="mt-auto w-full group/btn"
                       >
-                        Read More
+                        查看详情
                         <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                       </Button>
                     </CardContent>

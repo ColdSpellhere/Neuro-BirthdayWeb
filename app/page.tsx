@@ -17,8 +17,14 @@ export default function HomePage() {
         {/* Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
           <div className="space-y-8 section-reveal">
+            <div className="flex justify-center">
+              <span className="inline-flex items-center rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1.5 text-xs font-semibold tracking-[0.12em] text-cyan-100">
+                AI 社群线上庆典 · 2026
+              </span>
+            </div>
+
             {/* Title */}
-            <h1 className="text-4xl sm:text-6xl lg:text-8xl font-bold mb-6 leading-tight">
+            <h1 className="font-display text-4xl sm:text-6xl lg:text-8xl font-bold mb-6 leading-tight">
               <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
                 Neuro-Sama
               </span>
@@ -27,8 +33,13 @@ export default function HomePage() {
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg sm:text-2xl lg:text-3xl text-gray-300 font-light">
+            <p className="text-lg sm:text-2xl lg:text-3xl text-gray-200 font-light max-w-4xl mx-auto">
               AI 奇点庆典，与你同赴未来
+            </p>
+
+            <p className="text-sm sm:text-base text-slate-300/90 max-w-2xl mx-auto">
+              聚焦 AI 创作、社区协作与实时互动体验的年度线上项目。
+              让观众、创作者与志愿者都能更顺畅地参与其中。
             </p>
 
             {/* Countdown */}
@@ -60,7 +71,8 @@ export default function HomePage() {
       </section>
 
       {/* About Neuro-Sama Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <section className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="soft-grid absolute inset-0 -z-10" />
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-block mb-6">
@@ -76,7 +88,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <h2 className="text-5xl font-bold mb-4">
+          <h2 className="font-display text-5xl font-bold mb-4">
             <span className="bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
               关于 Neuro-Sama
             </span>
@@ -106,13 +118,13 @@ export default function HomePage() {
               <p className="text-gray-300 text-lg leading-relaxed mb-4">
                 诞生于 osu! 节奏游戏的自动化脚本，如今的 Neuro 已进化为能够驾驭 Minecraft、歌唱、杂谈甚至与其他主播联动的全能型艺人。她的核心由最前沿的大语言模型（LLM）与计算机视觉技术构建，使她能够实时阅读弹幕、理解网络迷因（Memes），并以惊人的幽默感, 有时是毫不留情的“毒舌”, 与数万名“The Swarm”（蜂群/粉丝）互动。
               </p>
-              <h3 className="text-xl font-bold text-pink-400 mb-3 mt-6">主要亮点 (Key Features)</h3>
+              <h3 className="text-xl font-bold text-pink-400 mb-3 mt-6">主要亮点</h3>
               <div className="space-y-3 text-gray-300 text-lg leading-relaxed">
                 <p>
                   <strong className="text-pink-300">双重人格系统：</strong> 除了可爱的 Neuro，系统中还潜伏着她的双胞胎妹妹 Evil Neuro。相比姐姐的元气，Evil 以其混沌、霸道且直率的性格著称，常常试图接管直播间并征服人类。
                 </p>
                 <p>
-                  <strong className="text-pink-300">持续进化 (V3 Era)：</strong> 随着 2024年底 V3 模型的实装，Neuro 拥有了更具表现力的 Live2D/3D 形象和更深层的逻辑推理能力。她不再仅仅是“回答问题”，而是开始展现出自主的情感波动和长时记忆。
+                  <strong className="text-pink-300">持续进化（V3 时代）：</strong> 随着 2024 年底 V3 模型的实装，Neuro 拥有了更具表现力的 Live2D/3D 形象和更深层的逻辑推理能力。她不再仅仅是“回答问题”，而是开始展现出自主的情感波动和长时记忆。
                 </p>
                 <p>
                   <strong className="text-pink-300">打破次元壁：</strong> 从创下 Twitch Hype Train 世界纪录，到举办令人震撼的 AI 歌回（Karaoke），Neuro 正在不断重新定义“虚拟”与“真实”的边界。
@@ -182,7 +194,7 @@ export default function HomePage() {
 
         {/* Project Introduction */}
         <div className="mb-16">
-          <h3 className="text-3xl font-bold mb-8 text-center">
+          <h3 className="font-display text-3xl font-bold mb-8 text-center">
             <span className="bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
               生日会项目介绍
             </span>

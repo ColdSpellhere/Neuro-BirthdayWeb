@@ -23,10 +23,16 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-lg sm:text-xl font-bold text-pink-500 hover:text-pink-400 transition-colors">
-              <span className="sm:hidden">Neuro-Sama 2026</span>
-              <span className="hidden sm:inline">Neuro-Sama 2026年B站社群生日会</span>
+          <Link href="/" className="flex items-center group pr-2 sm:pr-0">
+            <span className="leading-tight">
+              <span className="font-display text-[15px] sm:text-lg font-bold text-pink-100 group-hover:text-white transition-colors">
+                <span className="sm:hidden">Neuro-Sama 2026</span>
+                <span className="hidden sm:inline">Neuro-Sama 2026年B站社群生日会</span>
+              </span>
+              <span className="hidden sm:flex items-center gap-2 text-[10px] tracking-[0.12em] text-slate-400 mt-0.5">
+                <span className="status-dot" />
+                官方纪念网站
+              </span>
             </span>
           </Link>
 

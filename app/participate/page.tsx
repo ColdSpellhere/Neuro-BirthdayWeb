@@ -9,15 +9,17 @@ export default function ParticipatePage() {
     <div className="min-h-screen py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
-            <span className="bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
+        <div className="page-hero mb-8 sm:mb-12">
+          <span className="page-kicker">参与指南</span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-3 sm:mb-4">
+            <span className="title-gradient-tech">
               参与方式一览
             </span>
           </h1>
-          <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto px-4">
-            选择你的参与方式，一起为 Neuro-Sama 庆生！
+          <p className="page-subtitle px-4">
+            选择你的参与方式，一起为 Neuro-Sama 庆生。
           </p>
+          <div className="hero-divider" />
         </div>
 
         {/* Tabs Component */}

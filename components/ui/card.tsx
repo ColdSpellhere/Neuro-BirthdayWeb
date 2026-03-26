@@ -6,7 +6,7 @@ export function Card({ className, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        "glass-effect rounded-2xl p-6 transition-all hover:scale-[1.02]",
+        "glass-effect rounded-2xl border border-white/12 p-6 shadow-[0_10px_28px_rgba(2,6,23,0.35)] transition-all",
         className
       )}
       {...props}
@@ -19,7 +19,7 @@ export function CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDiv
 }
 
 export function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
-  return <h3 className={cn("text-2xl font-semibold leading-none tracking-tight", className)} {...props} />
+  return <h3 className={cn("text-2xl font-semibold leading-tight tracking-tight", className)} {...props} />
 }
 
 export function CardDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {

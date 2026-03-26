@@ -152,21 +152,23 @@ export default function SchedulePage() {
   const sortedDates = Array.from(groupedEvents.keys()).sort()
   
   return (
-    <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-16 px-4 sm:px-6 sm:py-20 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
+        <div className="page-hero mb-16">
+          <span className="page-kicker">活动时间轴</span>
+          <h1 className="text-4xl sm:text-5xl font-bold mt-4 mb-3">
+            <span className="title-gradient-tech">
               活动日程
             </span>
           </h1>
-          <p className="text-gray-400 text-lg">
+          <p className="page-subtitle">
             所有时间均为北京时间 (UTC+8)
           </p>
-          <p className="text-cyan-400 text-sm mt-2">
+          <p className="text-cyan-300 text-xs sm:text-sm mt-2">
             当前时间: {currentBeijingDisplay.date} {currentBeijingDisplay.time}
           </p>
+          <div className="hero-divider" />
         </div>
 
         {/* 按日期分组渲染时间轴 */}

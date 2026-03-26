@@ -41,9 +41,14 @@ export function Footer() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Copyright */}
-          <p className="text-gray-400 text-sm text-center sm:text-left">
-            © 2026 Neuro-Sama Birthday Committee
-          </p>
+          <div className="text-center sm:text-left">
+            <p className="font-display text-sm text-slate-300">
+              Neuro-Sama 生日会筹备组
+            </p>
+            <p className="text-xs text-slate-500 tracking-[0.08em] mt-1">
+              © 2026 保留所有权利
+            </p>
+          </div>
 
           {/* Social Media Icons */}
           <div className="flex items-center gap-4">
