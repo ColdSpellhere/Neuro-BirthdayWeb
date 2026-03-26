@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Clock, CheckCircle2, Circle } from "lucide-react"
-import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 /**
@@ -133,8 +132,8 @@ function groupEventsByDate(events: ScheduleEvent[]): Map<string, ScheduleEvent[]
 }
 
 export default function SchedulePage() {
-  // 使用 State 存储当前北京时间，避免服务端渲染与客户端渲染的 hydration 不匹配
-  const [currentTime, setCurrentTime] = useState<Date | null>(null)
+  // 在首次渲染就初始化时间，减少页面闪烁
+  const [currentTime, setCurrentTime] = useState<Date>(() => new Date())
   
   // 在客户端挂载后初始化时间，并设置定时器每分钟更新一次
   useEffect(() => {
@@ -147,15 +146,6 @@ export default function SchedulePage() {
     return () => clearInterval(interval)
   }, [])
   
-  // 当 currentTime 未初始化时，显示加载状态
-  if (!currentTime) {
-    return (
-      <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-        <div className="text-gray-400">加载日程中...</div>
-      </div>
-    )
-  }
-  
   const currentBeijingDisplay = formatBeijingDateTime(currentTime);
   // 按日期分组并排序事件
   const groupedEvents = groupEventsByDate(scheduleEvents)
@@ -165,12 +155,7 @@ export default function SchedulePage() {
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-4">
             <span className="bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
               活动日程
@@ -182,22 +167,17 @@ export default function SchedulePage() {
           <p className="text-cyan-400 text-sm mt-2">
             当前时间: {currentBeijingDisplay.date} {currentBeijingDisplay.time}
           </p>
-        </motion.div>
+        </div>
 
         {/* 按日期分组渲染时间轴 */}
-        {sortedDates.map((dateKey, dateIndex) => {
+        {sortedDates.map((dateKey) => {
           const eventsOnThisDay = groupedEvents.get(dateKey)!
           const { date } = formatBeijingDateTime(eventsOnThisDay[0].timestamp)
           
           return (
             <div key={dateKey} className="mb-12">
               {/* 日期标签 */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: dateIndex * 0.1 }}
-                className="mb-8"
-              >
+              <div className="mb-8">
                 <div className="flex items-center gap-4">
                   <div className="glass-effect px-6 py-3 rounded-full border border-pink-500/30">
                     <span className="text-xl font-bold bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
@@ -206,7 +186,7 @@ export default function SchedulePage() {
                   </div>
                   <div className="flex-1 h-px bg-gradient-to-r from-pink-500/50 to-transparent" />
                 </div>
-              </motion.div>
+              </div>
 
               {/* 该日期的时间轴容器 */}
               <div className="relative">
@@ -223,20 +203,14 @@ export default function SchedulePage() {
                     const { time } = formatBeijingDateTime(event.timestamp)
                     
                     return (
-                      <motion.div
-                        key={event.timestamp}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: (dateIndex * 0.1) + (eventIndex * 0.1) }}
-                        className="relative flex gap-2 group"
-                      >
+                      <div key={event.timestamp} className="relative flex gap-2 group">
                         {/* 时间与状态指示器 */}
                         <div className="flex flex-col items-center gap-2 flex-shrink-0 ml-8">
                           {/* 状态图标 */}
                           <div className={cn(
                             "w-8 h-8 rounded-full flex items-center justify-center z-10 transition-all",
                             status === "completed" && "bg-gray-600",
-                            status === "active" && "bg-pink-500 animate-glow",
+                            status === "active" && "bg-pink-500 animate-glow ring-4 ring-pink-500/30",
                             status === "upcoming" && "bg-slate-700"
                           )}>
                             {status === "completed" && (
@@ -275,7 +249,10 @@ export default function SchedulePage() {
                               status === "active" && "neon-glow-pink glass-effect border-pink-500/50",
                               status === "upcoming" && "glass-effect border-white/10 hover:border-white/20"
                             )}>
-                            <CardContent className="p-6">
+                            <CardContent className="relative p-6">
+                              {status === "active" && (
+                                <span className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-pink-400 to-cyan-400 rounded-l-lg" />
+                              )}
                               <h3 className={cn(
                                 "text-xl font-bold mb-2",
                                 status === "completed" && "text-gray-400",
@@ -313,7 +290,10 @@ export default function SchedulePage() {
                               status === "active" && "neon-glow-pink glass-effect border-pink-500/50",
                               status === "upcoming" && "glass-effect border-white/10"
                             )}>
-                            <CardContent className="p-6">
+                            <CardContent className="relative p-6">
+                              {status === "active" && (
+                                <span className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-pink-400 to-cyan-400 rounded-l-lg" />
+                              )}
                               <h3 className={cn(
                                 "text-xl font-bold mb-2",
                                 status === "completed" && "text-gray-400",
@@ -344,7 +324,7 @@ export default function SchedulePage() {
                           </Card>
                           </div>
                         )}
-                      </motion.div>
+                      </div>
                     )
                   })}
                 </div>
@@ -354,13 +334,7 @@ export default function SchedulePage() {
         })}
 
         {/* 页脚提示 */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mt-16 text-center"
-        >
+        <div className="mt-16 text-center">
           <Card className="glass-effect inline-block">
             <CardContent className="p-6">
               <p className="text-gray-400 text-sm">
@@ -368,7 +342,7 @@ export default function SchedulePage() {
               </p>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       </div>
     </div>
   )

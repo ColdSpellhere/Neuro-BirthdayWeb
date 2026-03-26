@@ -1,23 +1,15 @@
-"use client"
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
-import { ExternalLink, AlertTriangle, Users, Image, Briefcase, Pencil } from "lucide-react"
-import { motion } from "framer-motion"
+import { ExternalLink, AlertTriangle, Users, Image as ImageIcon, Briefcase, Pencil } from "lucide-react"
 
 export default function ParticipatePage() {
   return (
     <div className="min-h-screen py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12"
-        >
+        <div className="text-center mb-8 sm:mb-12">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
             <span className="bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
               参与方式一览
@@ -26,33 +18,29 @@ export default function ParticipatePage() {
           <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto px-4">
             选择你的参与方式，一起为 Neuro-Sama 庆生！
           </p>
-        </motion.div>
+        </div>
 
         {/* Tabs Component */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
+        <div>
           <Tabs defaultValue="audience" className="w-full">
             {/* 优化移动端 TabsList */}
             <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 mb-6 sm:mb-8 h-auto gap-2 sm:gap-0 bg-slate-900/50 p-1">
-              <TabsTrigger value="audience" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2 sm:py-2.5">
+              <TabsTrigger value="audience" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2 sm:py-2.5 focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                 <Users className="w-3 h-3 sm:w-4 sm:h-4" />
                 <span>观众</span>
               </TabsTrigger>
-              <TabsTrigger value="submission" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2 sm:py-2.5">
+              <TabsTrigger value="submission" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2 sm:py-2.5 focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                 <Pencil className="w-3 h-3 sm:w-4 sm:h-4" />
                 <span>单品投稿</span>
               </TabsTrigger>
-              <TabsTrigger value="art" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2 sm:py-2.5">
-                <Image className="w-3 h-3 sm:w-4 sm:h-4" />
+              <TabsTrigger value="art" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2 sm:py-2.5 focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
+                <ImageIcon className="w-3 h-3 sm:w-4 sm:h-4" />
                 <span>贺图投稿</span>
               </TabsTrigger>
-              <TabsTrigger value="volunteer" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2 sm:py-2.5">
+              <TabsTrigger value="volunteer" className="gap-1 sm:gap-2 text-xs sm:text-sm py-2 sm:py-2.5 focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                 <Briefcase className="w-3 h-3 sm:w-4 sm:h-4" />
-                <span className="hidden xs:inline">Staff志愿者</span>
-                <span className="xs:hidden">志愿者</span>
+                <span className="hidden sm:inline">Staff志愿者</span>
+                <span className="sm:hidden">志愿者</span>
               </TabsTrigger>
             </TabsList>
 
@@ -84,7 +72,7 @@ export default function ParticipatePage() {
 
                   <Button 
                     size="lg" 
-                    className="w-full sm:w-auto text-base sm:text-lg h-11 sm:h-12"
+                    className="w-full sm:w-auto text-base sm:text-lg h-11 sm:h-12 focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                     asChild
                     >
                       <a
@@ -152,7 +140,7 @@ export default function ParticipatePage() {
 
                   <Button 
                     size="lg" 
-                    className="w-full sm:w-auto text-base sm:text-lg h-11 sm:h-12" 
+                    className="w-full sm:w-auto text-base sm:text-lg h-11 sm:h-12 focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" 
                     variant="outline"
                     asChild
                     >
@@ -175,7 +163,7 @@ export default function ParticipatePage() {
               <Card className="glass-effect border-purple-500/30">
                 <CardHeader className="pb-4 sm:pb-6">
                   <CardTitle className="text-xl sm:text-2xl flex items-center gap-2">
-                    <Image className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400 flex-shrink-0" />
+                    <ImageIcon className="w-5 h-5 sm:w-6 sm:h-6 text-purple-400 flex-shrink-0" />
                     贺图投稿说明
                   </CardTitle>
                 </CardHeader>
@@ -223,7 +211,7 @@ export default function ParticipatePage() {
 
                   <Button 
                     size="lg" 
-                    className="w-full sm:w-auto text-base sm:text-lg h-11 sm:h-12"
+                    className="w-full sm:w-auto text-base sm:text-lg h-11 sm:h-12 focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                     asChild
                     >
                       <a
@@ -295,7 +283,7 @@ export default function ParticipatePage() {
                   <div className="space-y-2">
                     <Button 
                       size="lg" 
-                      className="w-full sm:w-auto text-base sm:text-lg h-11 sm:h-12" 
+                      className="w-full sm:w-auto text-base sm:text-lg h-11 sm:h-12 focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" 
                       asChild
                     >
                       <a
@@ -315,7 +303,7 @@ export default function ParticipatePage() {
               </Card>
             </TabsContent>
           </Tabs>
-        </motion.div>
+        </div>
       </div>
     </div>
   )

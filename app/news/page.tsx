@@ -1,11 +1,10 @@
 "use client"
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect, useRef, useCallback } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, ArrowRight, Search, X, TrendingUp, Filter } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+import { Calendar, ArrowRight, Search, X, TrendingUp, Filter, ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
 
 // 新闻数据
@@ -15,7 +14,7 @@ const newsData = [
     title: "关于本期生日会参与意愿调查问卷",
     date: "2026-01-19",
     category: "公告",
-    image: "/news/news1.png",
+    image: "/news/news1-opt.jpg",
     excerpt: "致上期生日会全体工作人员：感谢你们在上期 Neuro-Sama 生日庆典中的辛勤付出与卓越表现。本期生日会筹备工作现已启动，我们诚挚邀请各位填写参与意愿调查问卷。",
     content: {
       intro: "致上期生日会全体工作人员：",
@@ -77,6 +76,8 @@ export default function NewsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedNews, setSelectedNews] = useState<typeof newsData[0] | null>(null)
+  const modalRef = useRef<HTMLDivElement | null>(null)
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null)
 
   // 点击新闻时打开详情
   const handleNewsClick = (news: typeof newsData[0]) => {
@@ -104,6 +105,14 @@ export default function NewsPage() {
   // Featured news
   const featuredNews = newsData.filter(news => news.featured).slice(0, 3)
 
+  const selectedNewsIndex = useMemo(() => {
+    if (!selectedNews) return -1
+    return newsData.findIndex((item) => item.id === selectedNews.id)
+  }, [selectedNews])
+
+  const hasPrevNews = selectedNewsIndex > 0
+  const hasNextNews = selectedNewsIndex >= 0 && selectedNewsIndex < newsData.length - 1
+
   // Reset page when filters change
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category)
@@ -115,16 +124,75 @@ export default function NewsPage() {
     setCurrentPage(1)
   }
 
+  const openPrevNews = useCallback(() => {
+    if (!hasPrevNews) return
+    setSelectedNews(newsData[selectedNewsIndex - 1])
+  }, [hasPrevNews, selectedNewsIndex])
+
+  const openNextNews = useCallback(() => {
+    if (!hasNextNews) return
+    setSelectedNews(newsData[selectedNewsIndex + 1])
+  }, [hasNextNews, selectedNewsIndex])
+
+  useEffect(() => {
+    if (!selectedNews) return
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    closeButtonRef.current?.focus()
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectedNews(null)
+        return
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault()
+        openPrevNews()
+        return
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault()
+        openNextNews()
+        return
+      }
+
+      if (event.key !== "Tab" || !modalRef.current) return
+
+      const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+
+      if (!focusable.length) return
+
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      const active = document.activeElement as HTMLElement | null
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [selectedNews, openPrevNews, openNextNews])
+
   return (
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
+        <div className="text-center mb-12 section-reveal">
           <h1 className="text-5xl font-bold mb-4">
             <span className="bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
               最新新闻
@@ -133,30 +201,20 @@ export default function NewsPage() {
           <p className="text-gray-400 text-lg">
             随时了解最新的公告和更新
           </p>
-        </motion.div>
+        </div>
 
         {/* Featured News Section */}
         {featuredNews.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="mb-16"
-          >
+          <div className="mb-16 section-reveal [animation-delay:80ms]">
             <div className="flex items-center gap-2 mb-6">
               <TrendingUp className="w-6 h-6 text-pink-500" />
               <h2 className="text-2xl font-bold">精选新闻</h2>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {featuredNews.map((news, index) => (
-                <motion.div
-                  key={news.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4, delay: index * 0.1 }}
-                >
+                <div key={news.id}>
                   <Card 
-                    className="glass-effect hover:neon-glow-pink transition-all h-full cursor-pointer group"
+                    className="glass-effect hover:neon-glow-pink transition-all h-full cursor-pointer group card-lift"
                     onClick={() => handleNewsClick(news)}
                   >
                     <div className="aspect-video bg-gradient-to-br from-pink-600/20 to-purple-600/20 relative overflow-hidden">
@@ -165,9 +223,9 @@ export default function NewsPage() {
                           src={news.image}
                           alt={news.title}
                           fill
-                          unoptimized
+                          sizes="(max-width: 1024px) 100vw, 33vw"
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          priority
+                          priority={index === 0}
                         />
                       ) : (
                         <>
@@ -199,19 +257,14 @@ export default function NewsPage() {
                       </div>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* Search and Filter Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-8"
-        >
+        <div className="mb-8 section-reveal [animation-delay:120ms]">
           {/* Search Bar */}
           <div className="relative mb-6">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -246,11 +299,12 @@ export default function NewsPage() {
                 variant={selectedCategory === category ? "default" : "outline"}
                 size="sm"
                 onClick={() => handleCategoryChange(category)}
+                aria-pressed={selectedCategory === category}
                 className={`transition-all ${
                   selectedCategory === category
-                    ? "bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
-                    : "hover:border-pink-500"
-                }`}
+                    ? "bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white shadow-[0_0_20px_rgba(236,72,153,0.35)]"
+                    : "bg-slate-900/30 border-white/15 text-gray-300 hover:text-pink-300 hover:border-pink-400/60"
+                } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950`}
               >
                 {category}
               </Button>
@@ -261,28 +315,15 @@ export default function NewsPage() {
           <div className="mt-4 text-sm text-gray-400">
             找到 <span className="text-pink-400 font-semibold">{filteredNews.length}</span> 篇新闻
           </div>
-        </motion.div>
+        </div>
 
         {/* News Grid */}
-        <AnimatePresence mode="wait">
-          {paginatedNews.length > 0 ? (
-            <motion.div
-              key={currentPage}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
-            >
-              {paginatedNews.map((news, index) => (
-                <motion.div
-                  key={news.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                >
+        {paginatedNews.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 section-reveal [animation-delay:150ms]">
+              {paginatedNews.map((news) => (
+                <div key={news.id}>
                   <Card 
-                    className="glass-effect hover:neon-glow-pink transition-all h-full flex flex-col cursor-pointer group"
+                    className="glass-effect hover:neon-glow-pink transition-all h-full flex flex-col cursor-pointer group card-lift"
                     onClick={() => handleNewsClick(news)}
                   >
                     {/* News Image */}
@@ -292,7 +333,7 @@ export default function NewsPage() {
                           src={news.image}
                           alt={news.title}
                           fill
-                          unoptimized
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       ) : (
@@ -338,15 +379,11 @@ export default function NewsPage() {
                       </Button>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20"
-            >
+          </div>
+        ) : (
+          <div className="text-center py-20">
               <div className="text-6xl mb-4">📭</div>
               <p className="text-gray-400 text-lg">没有找到符合条件的新闻</p>
               <Button
@@ -359,18 +396,12 @@ export default function NewsPage() {
               >
                 重置筛选
               </Button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          </div>
+        )}
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="flex justify-center items-center gap-2"
-          >
+          <div className="flex justify-center items-center gap-2">
             <Button
               variant="outline"
               size="sm"
@@ -406,24 +437,21 @@ export default function NewsPage() {
             >
               下一页
             </Button>
-          </motion.div>
+          </div>
         )}
 
         {/* News Detail Modal */}
-        <AnimatePresence>
-          {selectedNews && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-              onClick={() => setSelectedNews(null)}
-            >
-              <motion.div
-                initial={{ scale: 0.9, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.9, y: 20 }}
-                className="bg-slate-900 border border-slate-700 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+        {selectedNews && (
+          <div
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setSelectedNews(null)}
+          >
+              <div
+                ref={modalRef}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="news-modal-title"
+                className="bg-slate-900 border border-slate-700 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto section-reveal"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="sticky top-0 bg-slate-900/95 backdrop-blur-sm border-b border-slate-700 p-6 flex justify-between items-start z-10">
@@ -431,17 +459,43 @@ export default function NewsPage() {
                     <Badge className={`mb-3 ${categoryColors[selectedNews.categoryColor]}`}>
                       {selectedNews.category}
                     </Badge>
-                    <h2 className="text-3xl font-bold mb-3">
+                    <h2 id="news-modal-title" className="text-3xl font-bold mb-3">
                       {selectedNews.title}
                     </h2>
                     <div className="flex items-center gap-2 text-sm text-gray-400">
                       <Calendar className="w-4 h-4" />
                       <span>{selectedNews.date}</span>
                     </div>
+                    <div className="mt-4 flex items-center gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={openPrevNews}
+                        disabled={!hasPrevNews}
+                        className="border-white/15 hover:border-pink-400/60"
+                      >
+                        <ChevronLeft className="w-4 h-4 mr-1" />
+                        上一篇
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={openNextNews}
+                        disabled={!hasNextNews}
+                        className="border-white/15 hover:border-pink-400/60"
+                      >
+                        下一篇
+                        <ChevronRight className="w-4 h-4 ml-1" />
+                      </Button>
+                    </div>
                   </div>
                   <button
+                    ref={closeButtonRef}
                     onClick={() => setSelectedNews(null)}
                     className="text-gray-400 hover:text-white transition-colors p-2"
+                    aria-label="关闭新闻详情"
                   >
                     <X className="w-6 h-6" />
                   </button>
@@ -454,7 +508,7 @@ export default function NewsPage() {
                         src={selectedNews.image}
                         alt={selectedNews.title}
                         fill
-                        unoptimized
+                        sizes="(max-width: 768px) 100vw, 900px"
                         className="object-cover"
                       />
                     ) : (
@@ -512,10 +566,9 @@ export default function NewsPage() {
                     <p className="text-gray-400">{selectedNews.content.date}</p>
                   </div>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           )}
-        </AnimatePresence>
       </div>
     </div>
   )

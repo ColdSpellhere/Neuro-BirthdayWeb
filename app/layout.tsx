@@ -7,8 +7,28 @@ import { Footer } from "@/components/footer"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Neuro-Sama 2026年B站社群生日会",
-  description: "Neuro-Sama 2026年B站社群生日会官方纪念网站",
+  title: {
+    default: "Neuro-Sama 2026年B站社群生日会",
+    template: "%s | Neuro-Sama 2026年B站社群生日会",
+  },
+  description: "Neuro-Sama 2026年B站社群生日会官方纪念网站，包含活动日程、参与方式与最新公告。",
+  keywords: ["Neuro-Sama", "生日会", "B站", "社群活动", "AI VTuber"],
+  openGraph: {
+    title: "Neuro-Sama 2026年B站社群生日会",
+    description: "Neuro-Sama 2026年B站社群生日会官方纪念网站，包含活动日程、参与方式与最新公告。",
+    type: "website",
+    locale: "zh_CN",
+    images: ["/news/news1-opt.jpg"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Neuro-Sama 2026年B站社群生日会",
+    description: "查看生日会日程、参与通道与官方公告。",
+    images: ["/news/news1-opt.jpg"],
+  },
+  alternates: {
+    canonical: "/",
+  },
 }
 
 export default function RootLayout({
@@ -18,7 +38,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN" className="dark">
-      <body className={`${inter.className} bg-slate-950 text-slate-50`}>
+      <body className={`${inter.className} site-background text-slate-50`}>
         <Navbar />
         <main className="min-h-screen">
           {children}

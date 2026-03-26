@@ -18,13 +18,15 @@ export function Navbar() {
   const pathname = usePathname()
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-white/10">
+    <nav className="sticky top-0 z-50 backdrop-blur-xl bg-slate-950/70 border-b border-white/10 shadow-[0_8px_30px_rgba(2,6,23,0.35)]">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/35 to-transparent" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-xl font-bold text-pink-500 hover:text-pink-400 transition-colors">
-              Neuro-Sama 2026年B站社群生日会
+            <span className="text-lg sm:text-xl font-bold text-pink-500 hover:text-pink-400 transition-colors">
+              <span className="sm:hidden">Neuro-Sama 2026</span>
+              <span className="hidden sm:inline">Neuro-Sama 2026年B站社群生日会</span>
             </span>
           </Link>
 
@@ -35,10 +37,10 @@ export function Navbar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "px-4 py-2 rounded-lg transition-all font-medium",
+                  "px-4 py-2 rounded-lg transition-all font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
                   pathname === item.href
-                    ? "bg-pink-500/20 text-pink-400"
-                    : "text-gray-300 hover:text-pink-400 hover:bg-white/5"
+                    ? "bg-gradient-to-r from-pink-500/30 to-cyan-400/20 text-pink-200 border border-pink-400/30 shadow-[0_0_18px_rgba(236,72,153,0.25)]"
+                    : "text-gray-300 hover:text-pink-300 hover:bg-white/5"
                 )}
               >
                 {item.label}
@@ -49,7 +51,7 @@ export function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-lg hover:bg-white/5 transition-colors"
+            className="md:hidden p-2 rounded-lg hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500/70"
             aria-label="Toggle menu"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -59,7 +61,7 @@ export function Navbar() {
 
       {/* Mobile Navigation Sidebar */}
       {isOpen && (
-        <div className="md:hidden border-t border-white/10 bg-slate-950/95 backdrop-blur-md">
+        <div className="md:hidden border-t border-white/10 bg-slate-950/90 backdrop-blur-xl">
           <div className="px-4 py-4 space-y-2">
             {navItems.map((item) => (
               <Link
@@ -67,10 +69,10 @@ export function Navbar() {
                 href={item.href}
                 onClick={() => setIsOpen(false)}
                 className={cn(
-                  "block px-4 py-3 rounded-lg transition-all font-medium",
+                  "block px-4 py-3 rounded-lg transition-all font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500/70",
                   pathname === item.href
-                    ? "bg-pink-500/20 text-pink-400"
-                    : "text-gray-300 hover:text-pink-400 hover:bg-white/5"
+                    ? "bg-gradient-to-r from-pink-500/30 to-cyan-400/20 text-pink-200 border border-pink-400/30"
+                    : "text-gray-300 hover:text-pink-300 hover:bg-white/5"
                 )}
               >
                 {item.label}

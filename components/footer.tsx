@@ -35,8 +35,10 @@ const DiscordIcon = ({ className }: { className?: string }) => (
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-slate-950">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <footer className="relative border-t border-white/10 bg-slate-950/80 backdrop-blur-xl">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-pink-400/35 to-transparent" />
+      <div className="absolute inset-0 soft-grid opacity-25" />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Copyright */}
           <p className="text-gray-400 text-sm text-center sm:text-left">
@@ -49,7 +51,7 @@ export function Footer() {
               href="https://space.bilibili.com/3546729368520811?spm_id_from=333.337.0.0"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-white/5 hover:bg-pink-500/20 flex items-center justify-center transition-all group"
+              className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-pink-500/20 flex items-center justify-center transition-all group icon-hover-float focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500/70"
               aria-label="Bilibili"
             >
               <BilibiliIcon className="w-5 h-5 text-gray-400 group-hover:text-pink-400 transition-colors" />
@@ -58,7 +60,7 @@ export function Footer() {
               href="https://x.com/NeurosamaAI"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-white/5 hover:bg-white/20 flex items-center justify-center transition-all group"
+              className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-white/20 flex items-center justify-center transition-all group icon-hover-float focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500/70"
               aria-label="X"
             >
               <XIcon className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
@@ -67,7 +69,7 @@ export function Footer() {
               href="https://www.twitch.tv/vedal987"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-white/5 hover:bg-purple-500/20 flex items-center justify-center transition-all group"
+              className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-purple-500/20 flex items-center justify-center transition-all group icon-hover-float focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500/70"
               aria-label="Twitch"
             >
               <TwitchIcon className="w-5 h-5 text-gray-400 group-hover:text-purple-400 transition-colors" />
@@ -76,7 +78,7 @@ export function Footer() {
               href="https://www.youtube.com/@Neurosama"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-white/5 hover:bg-red-500/20 flex items-center justify-center transition-all group"
+              className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-red-500/20 flex items-center justify-center transition-all group icon-hover-float focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500/70"
               aria-label="YouTube"
             >
               <YouTubeIcon className="w-5 h-5 text-gray-400 group-hover:text-red-400 transition-colors" />
@@ -85,7 +87,7 @@ export function Footer() {
               href="https://discord.com/invite/neurosama"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full bg-white/5 hover:bg-indigo-500/20 flex items-center justify-center transition-all group"
+              className="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-indigo-500/20 flex items-center justify-center transition-all group icon-hover-float focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500/70"
               aria-label="Discord"
             >
               <DiscordIcon className="w-5 h-5 text-gray-400 group-hover:text-indigo-400 transition-colors" />

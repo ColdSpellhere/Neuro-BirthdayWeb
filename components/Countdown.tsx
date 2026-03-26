@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { memo, useEffect, useMemo, useState } from "react"
 import { Card } from "@/components/ui/card"
 
 interface TimeLeft {
@@ -9,6 +9,19 @@ interface TimeLeft {
   minutes: number
   seconds: number
 }
+
+const TimeCard = memo(function TimeCard({ value, label }: { value: number; label: string }) {
+  return (
+    <Card className="glass-effect p-6 text-center hover:neon-glow-pink transition-all">
+      <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent mb-2">
+        {String(value).padStart(2, "0")}
+      </div>
+      <div className="text-sm text-gray-400 uppercase tracking-wider">
+        {label}
+      </div>
+    </Card>
+  )
+})
 
 export function Countdown() {
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
@@ -40,27 +53,20 @@ export function Countdown() {
     return () => clearInterval(timer)
   }, [])
 
-  const timeUnits = [
-    { value: timeLeft.days, label: "Days" },
-    { value: timeLeft.hours, label: "Hours" },
-    { value: timeLeft.minutes, label: "Minutes" },
-    { value: timeLeft.seconds, label: "Seconds" },
-  ]
+  const timeUnits = useMemo(
+    () => [
+      { value: timeLeft.days, label: "Days" },
+      { value: timeLeft.hours, label: "Hours" },
+      { value: timeLeft.minutes, label: "Minutes" },
+      { value: timeLeft.seconds, label: "Seconds" },
+    ],
+    [timeLeft.days, timeLeft.hours, timeLeft.minutes, timeLeft.seconds]
+  )
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
       {timeUnits.map((unit, index) => (
-        <Card
-          key={index}
-          className="glass-effect p-6 text-center hover:neon-glow-pink transition-all"
-        >
-          <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent mb-2">
-            {String(unit.value).padStart(2, "0")}
-          </div>
-          <div className="text-sm text-gray-400 uppercase tracking-wider">
-            {unit.label}
-          </div>
-        </Card>
+        <TimeCard key={index} value={unit.value} label={unit.label} />
       ))}
     </div>
   )
