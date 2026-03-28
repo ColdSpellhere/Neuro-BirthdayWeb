@@ -9,10 +9,10 @@ export default function HomePage() {
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 aurora-bg">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 to-[#0a1324] aurora-bg">
         {/* Animated Background Overlay */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(236,72,153,0.1),transparent_50%)] animate-float" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(34,211,238,0.1),transparent_50%)] animate-float [animation-delay:1.2s]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(53,224,255,0.12),transparent_50%)] animate-float" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,79,163,0.08),transparent_50%)] animate-float [animation-delay:1.2s]" />
 
         {/* Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
@@ -25,7 +25,7 @@ export default function HomePage() {
 
             {/* Title */}
             <h1 className="font-display text-4xl sm:text-6xl lg:text-8xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-pink-500 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-cyan-300 via-sky-300 to-pink-300 bg-clip-text text-transparent">
                 Neuro-Sama
               </span>
               <br />
@@ -50,7 +50,7 @@ export default function HomePage() {
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-4 max-w-md sm:max-w-none mx-auto">
               <Link href="/participate">
-                <Button size="lg" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
+                <Button size="lg" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 focus-visible:ring-2 focus-visible:ring-cyan-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                   查看详情
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
@@ -60,7 +60,7 @@ export default function HomePage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button size="lg" variant="ghost" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 border border-white/20 focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
+                <Button size="lg" variant="ghost" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 border border-cyan-200/30 focus-visible:ring-2 focus-visible:ring-cyan-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                   观看直播
                   <ExternalLink className="w-5 h-5 ml-2" />
                 </Button>
@@ -76,7 +76,7 @@ export default function HomePage() {
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-block mb-6">
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-400 animate-glow mx-auto flex items-center justify-center overflow-hidden">
+            <div className="w-[7.5rem] h-[7.5rem] rounded-full bg-gradient-to-br from-cyan-300 via-sky-400 to-pink-400 animate-glow mx-auto flex items-center justify-center overflow-hidden">
               <div className="relative w-28 h-28 rounded-full overflow-hidden shadow-lg bg-black/10">
                 <Image
                   src="/neuro-avatar-opt.jpg"
@@ -89,7 +89,7 @@ export default function HomePage() {
             </div>
           </div>
           <h2 className="font-display text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-cyan-300 to-pink-300 bg-clip-text text-transparent">
               关于 Neuro-Sama
             </span>
           </h2>
@@ -101,7 +101,7 @@ export default function HomePage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Button size="lg" variant="ghost" className="w-full sm:w-auto text-lg px-8 border border-white/20 mt-6 -mb-6 focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
+                <Button size="lg" variant="ghost" className="w-full sm:w-auto text-lg px-8 border border-cyan-200/30 mt-6 -mb-6 focus-visible:ring-2 focus-visible:ring-cyan-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
                   B站账号
                   <ExternalLink className="w-5 h-5 ml-2" />
                 </Button>

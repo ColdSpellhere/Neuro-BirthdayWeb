@@ -22,9 +22,9 @@ export function Button({
       className={cn(
         "inline-flex items-center justify-center rounded-xl font-medium tracking-[0.01em] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
         {
-          "bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white hover:from-pink-500 hover:to-pink-400 shadow-[0_10px_24px_rgba(236,72,153,0.32)]": variant === "default",
+          "bg-[linear-gradient(100deg,#2ed5ff_0%,#63e6ff_48%,#8fdfff_100%)] bg-[length:200%_100%] bg-[position:0%_50%] text-slate-950 hover:bg-[position:100%_50%] shadow-[0_10px_24px_rgba(53,224,255,0.3)]": variant === "default",
           "bg-white/0 text-slate-200 hover:bg-white/8 hover:text-white": variant === "ghost",
-          "border border-pink-400/70 text-pink-300 bg-pink-500/5 hover:bg-pink-500/12": variant === "outline",
+          "border border-cyan-300/60 text-cyan-200 bg-cyan-300/5 hover:bg-cyan-300/12": variant === "outline",
         },
         {
           "h-10 px-4 py-2": size === "default",

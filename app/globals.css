@@ -10,9 +10,9 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 330 81% 60%;
+    --primary: 188 100% 61%;
     --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 187 85% 53%;
+    --secondary: 320 90% 64%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
@@ -22,7 +22,7 @@
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 330 81% 60%;
+    --ring: 188 100% 61%;
     --radius: 0.5rem;
   }
 }
@@ -43,12 +43,12 @@
   }
 
   .site-background {
-    background-color: #020617;
+    background-color: #050915;
     background-image:
-      radial-gradient(circle at 12% 10%, rgba(236, 72, 153, 0.14), transparent 32%),
-      radial-gradient(circle at 88% 8%, rgba(34, 211, 238, 0.12), transparent 34%),
-      radial-gradient(circle at 52% 92%, rgba(168, 85, 247, 0.1), transparent 38%),
-      linear-gradient(180deg, rgba(2, 6, 23, 0.97) 0%, rgba(2, 6, 23, 1) 100%);
+      radial-gradient(circle at 10% 8%, rgba(53, 224, 255, 0.22), transparent 35%),
+      radial-gradient(circle at 88% 10%, rgba(255, 79, 163, 0.12), transparent 36%),
+      radial-gradient(circle at 50% 90%, rgba(122, 247, 255, 0.1), transparent 38%),
+      linear-gradient(180deg, rgba(5, 9, 21, 0.96) 0%, rgba(5, 9, 21, 1) 100%);
     background-attachment: fixed;
   }
 
@@ -71,11 +71,11 @@
   }
 
   .page-kicker {
-    @apply inline-flex items-center rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1.5 text-[11px] font-semibold tracking-[0.12em] text-cyan-100;
+    @apply inline-flex items-center rounded-full border border-cyan-300/35 bg-cyan-300/15 px-3 py-1.5 text-[11px] font-semibold tracking-[0.12em] text-cyan-100;
   }
 
   .title-gradient-tech {
-    @apply font-display bg-gradient-to-r from-pink-400 via-fuchsia-300 to-cyan-300 bg-clip-text text-transparent;
+    @apply font-display bg-gradient-to-r from-cyan-300 via-sky-200 to-pink-300 bg-clip-text text-transparent;
   }
 
   .page-subtitle {
@@ -83,23 +83,23 @@
   }
 
   .hero-divider {
-    @apply mt-6 mx-auto h-px w-48 bg-gradient-to-r from-transparent via-cyan-300/40 to-transparent;
+    @apply mt-6 mx-auto h-px w-48 bg-gradient-to-r from-transparent via-cyan-300/55 to-transparent;
   }
 
   
   .neon-glow-pink {
-    @apply shadow-[0_0_15px_rgba(236,72,153,0.5)];
+    @apply shadow-[0_0_14px_rgba(255,79,163,0.42)];
   }
   
   .neon-glow-cyan {
-    @apply shadow-[0_0_15px_rgba(34,211,238,0.5)];
+    @apply shadow-[0_0_20px_rgba(53,224,255,0.55)];
   }
 
   .aurora-bg {
     background-image:
-      radial-gradient(circle at 15% 20%, rgba(236, 72, 153, 0.18), transparent 35%),
-      radial-gradient(circle at 85% 15%, rgba(34, 211, 238, 0.16), transparent 38%),
-      radial-gradient(circle at 50% 80%, rgba(168, 85, 247, 0.14), transparent 42%);
+      radial-gradient(circle at 14% 18%, rgba(53, 224, 255, 0.24), transparent 38%),
+      radial-gradient(circle at 82% 14%, rgba(122, 247, 255, 0.14), transparent 38%),
+      radial-gradient(circle at 52% 80%, rgba(255, 79, 163, 0.12), transparent 42%);
     background-size: 140% 140%;
     animation: auroraShift 18s ease-in-out infinite;
   }
