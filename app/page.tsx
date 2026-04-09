@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Countdown } from "@/components/Countdown"
+import { heroBackground } from "@/data/hero-background"
 import { ArrowRight, ExternalLink } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
@@ -9,10 +10,36 @@ export default function HomePage() {
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 to-[#0a1324] aurora-bg">
-        {/* Animated Background Overlay */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(53,224,255,0.12),transparent_50%)] animate-float" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,79,163,0.08),transparent_50%)] animate-float [animation-delay:1.2s]" />
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden site-background neuro-core-hero">
+        <div className="pointer-events-none absolute inset-0">
+          {heroBackground.enabled ? (
+            <>
+              <Image
+                src={heroBackground.desktopSrc}
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                className="hero-bg-media hidden md:block"
+                aria-hidden
+              />
+              <Image
+                src={heroBackground.mobileSrc || heroBackground.desktopSrc}
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                className="hero-bg-media md:hidden"
+                aria-hidden
+              />
+            </>
+          ) : (
+            <div className="absolute inset-0 hero-bg-placeholder" aria-hidden />
+          )}
+          <div className="absolute inset-0 hero-bg-overlay" />
+          <div className="absolute inset-0 neuro-neural-overlay" />
+          <div className="absolute left-1/2 top-1/2 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/10 blur-3xl" />
+        </div>
 
         {/* Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
@@ -29,7 +56,7 @@ export default function HomePage() {
                 Neuro-Sama
               </span>
               <br />
-              <span className="text-white">2026 B站社群生日会</span>
+              <span className="text-[color:var(--neuro-ink)]">2026 B站社群生日会</span>
             </h1>
 
             {/* Subtitle */}
@@ -76,13 +103,15 @@ export default function HomePage() {
         {/* Header */}
         <div className="text-center mb-16">
           <div className="inline-block mb-6">
-            <div className="w-[7.5rem] h-[7.5rem] rounded-full bg-gradient-to-br from-cyan-300 via-sky-400 to-pink-400 animate-glow mx-auto flex items-center justify-center overflow-hidden">
-              <div className="relative w-28 h-28 rounded-full overflow-hidden shadow-lg bg-black/10">
+            <div className="relative mx-auto h-[7.5rem] w-[7.5rem]">
+              <div className="absolute inset-0 rounded-full neuro-avatar-ring" />
+              <div className="absolute -inset-2 rounded-full neuro-avatar-ring-secondary" />
+              <div className="relative h-full w-full rounded-full overflow-hidden bg-black/10 neuro-avatar-core">
                 <Image
                   src="/neuro-avatar-opt.jpg"
                   alt="Neuro-Sama"
                   fill
-                  sizes="112px"
+                  sizes="120px"
                   className="object-cover"
                 />
               </div>
@@ -133,64 +162,6 @@ export default function HomePage() {
             </CardContent>
           </Card>
         </div>
-
-        {/* Features */}
-        {/* <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-16"
-        >
-          <h3 className="text-3xl font-bold mb-8 text-center">
-            <span className="bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
-              特色能力
-            </span>
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                icon: Brain,
-                title: "智能对话",
-                description: "先进的 NLP 技术，理解复杂语境",
-                color: "pink",
-              },
-              {
-                icon: Zap,
-                title: "即时反应",
-                description: "毫秒级响应，真实互动体验",
-                color: "cyan",
-              },
-              {
-                icon: Heart,
-                title: "情感表达",
-                description: "细腻的情感模拟，真实的人格",
-                color: "purple",
-              },
-              {
-                icon: Sparkles,
-                title: "创造力",
-                description: "原创笑话、故事和音乐创作",
-                color: "pink",
-              },
-            ].map((feature, index) => (
-              <Card
-                key={index}
-                className="text-center hover:neon-glow-cyan transition-all group"
-              >
-                <CardHeader>
-                  <div className={`w-16 h-16 rounded-full bg-${feature.color}-500/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
-                    <feature.icon className={`w-8 h-8 text-${feature.color}-400`} />
-                  </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-400 text-sm">{feature.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </motion.div> */}
 
         {/* Project Introduction */}
         <div className="mb-16">
@@ -249,38 +220,6 @@ export default function HomePage() {
             </a>
           </div>
         </div>
-        
-
-        {/* Stats */}
-        {/* <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <h3 className="text-3xl font-bold mb-8 text-center">
-            <span className="bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
-              惊人数据
-            </span>
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { value: "500K+", label: "粉丝" },
-              { value: "10M+", label: "观看时长" },
-              { value: "1000+", label: "直播小时数" },
-              { value: "50+", label: "游戏" },
-            ].map((stat, index) => (
-              <Card key={index} className="text-center neon-glow-pink">
-                <CardContent className="p-6">
-                  <div className="text-4xl font-bold bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent mb-2">
-                    {stat.value}
-                  </div>
-                  <div className="text-gray-400">{stat.label}</div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </motion.div> */}
       </section>
     </div>
   )

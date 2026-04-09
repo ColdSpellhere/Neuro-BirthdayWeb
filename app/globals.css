@@ -4,26 +4,32 @@
 
 @layer base {
   :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 188 100% 61%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 320 90% 64%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --background: 224 56% 5%;
+    --foreground: 206 100% 95%;
+    --card: 221 48% 11%;
+    --card-foreground: 206 100% 95%;
+    --popover: 221 48% 11%;
+    --popover-foreground: 206 100% 95%;
+    --primary: 188 100% 63%;
+    --primary-foreground: 224 56% 5%;
+    --secondary: 333 100% 68%;
+    --secondary-foreground: 224 56% 5%;
+    --muted: 222 34% 16%;
+    --muted-foreground: 212 38% 73%;
+    --accent: 222 34% 16%;
+    --accent-foreground: 206 100% 95%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 188 100% 61%;
+    --destructive-foreground: 206 100% 95%;
+    --border: 221 30% 25%;
+    --input: 221 30% 25%;
+    --ring: 188 100% 63%;
     --radius: 0.5rem;
+
+    --neuro-bg: #060a14;
+    --neuro-panel: #0e1528;
+    --neuro-cyan: #43e9ff;
+    --neuro-pink: #ff5daa;
+    --neuro-ink: #cfe8ff;
   }
 }
 
@@ -32,7 +38,8 @@
     @apply border-border;
   }
   body {
-    @apply bg-slate-950 text-foreground;
+    @apply text-foreground;
+    background-color: var(--neuro-bg);
   }
 }
 
@@ -43,13 +50,71 @@
   }
 
   .site-background {
-    background-color: #050915;
+    background-color: var(--neuro-bg);
     background-image:
-      radial-gradient(circle at 10% 8%, rgba(53, 224, 255, 0.22), transparent 35%),
-      radial-gradient(circle at 88% 10%, rgba(255, 79, 163, 0.12), transparent 36%),
-      radial-gradient(circle at 50% 90%, rgba(122, 247, 255, 0.1), transparent 38%),
-      linear-gradient(180deg, rgba(5, 9, 21, 0.96) 0%, rgba(5, 9, 21, 1) 100%);
+      radial-gradient(circle at 12% 8%, rgba(67, 233, 255, 0.2), transparent 34%),
+      radial-gradient(circle at 88% 12%, rgba(255, 93, 170, 0.14), transparent 36%),
+      radial-gradient(circle at 52% 88%, rgba(67, 233, 255, 0.08), transparent 42%),
+      linear-gradient(140deg, rgba(8, 14, 30, 0.96) 0%, rgba(6, 10, 20, 1) 52%, rgba(9, 14, 28, 1) 100%);
     background-attachment: fixed;
+  }
+
+  .neuro-core-hero {
+    background-image:
+      radial-gradient(circle at 18% 16%, rgba(67, 233, 255, 0.18), transparent 35%),
+      radial-gradient(circle at 82% 14%, rgba(255, 93, 170, 0.16), transparent 34%),
+      radial-gradient(circle at 50% 62%, rgba(67, 233, 255, 0.09), transparent 46%),
+      linear-gradient(180deg, rgba(6, 10, 20, 0.92) 0%, rgba(6, 10, 20, 1) 100%);
+    isolation: isolate;
+  }
+
+  .neuro-neural-overlay {
+    opacity: 0.45;
+    background-image:
+      linear-gradient(115deg, rgba(67, 233, 255, 0.18) 0%, rgba(67, 233, 255, 0) 35%),
+      linear-gradient(65deg, rgba(255, 93, 170, 0.14) 0%, rgba(255, 93, 170, 0) 45%),
+      repeating-linear-gradient(90deg, rgba(148, 196, 255, 0.06) 0 1px, transparent 1px 42px),
+      repeating-linear-gradient(0deg, rgba(148, 196, 255, 0.045) 0 1px, transparent 1px 42px);
+    mask-image: radial-gradient(circle at center, black 30%, transparent 88%);
+  }
+
+  .neuro-wave-line {
+    height: 96px;
+    background-image:
+      radial-gradient(ellipse at center, rgba(67, 233, 255, 0.24), rgba(67, 233, 255, 0) 70%),
+      repeating-linear-gradient(-12deg, rgba(67, 233, 255, 0.12) 0 2px, transparent 2px 16px);
+    filter: blur(0.2px);
+    opacity: 0.65;
+  }
+
+  .neuro-duality-chip {
+    @apply inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold tracking-[0.12em];
+    border-color: rgba(255, 93, 170, 0.35);
+    color: #ffd5e9;
+    background: linear-gradient(90deg, rgba(67, 233, 255, 0.12), rgba(255, 93, 170, 0.16));
+  }
+
+  .hero-bg-placeholder {
+    background-image:
+      radial-gradient(circle at 68% 24%, rgba(67, 233, 255, 0.11), transparent 38%),
+      radial-gradient(circle at 84% 48%, rgba(255, 93, 170, 0.12), transparent 36%),
+      linear-gradient(180deg, rgba(6, 10, 20, 0.3) 0%, rgba(6, 10, 20, 0.82) 100%);
+  }
+
+  .hero-bg-media {
+    object-fit: cover;
+    object-position: center;
+    opacity: 1.0;
+    transform: scale(1.015);
+    filter: saturate(1.08) contrast(1.06) brightness(1.08);
+  }
+
+  .hero-bg-overlay {
+    background-image:
+      linear-gradient(90deg, rgba(6, 10, 20, 0.5) 0%, rgba(6, 10, 20, 0.32) 45%, rgba(6, 10, 20, 0.5) 100%),
+      radial-gradient(circle at 20% 34%, rgba(6, 10, 20, 0.035), transparent 46%),
+      radial-gradient(circle at 82% 22%, rgba(6, 10, 20, 0.145), transparent 44%),
+      linear-gradient(180deg, rgba(6, 10, 20, 0.075) 0%, rgba(6, 10, 20, 0.56) 100%);
   }
 
   .glass-effect {
@@ -142,6 +207,56 @@
     box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.6);
     animation: statusPulse 1.8s ease-out infinite;
   }
+
+  .neuro-avatar-core {
+    border: 1px solid rgba(207, 232, 255, 0.45);
+    box-shadow:
+      0 0 0 2px rgba(6, 10, 20, 0.88),
+      0 0 24px rgba(67, 233, 255, 0.34),
+      0 0 48px rgba(255, 93, 170, 0.25);
+  }
+
+  .neuro-avatar-ring {
+    border: 1px solid rgba(67, 233, 255, 0.65);
+    box-shadow: 0 0 20px rgba(67, 233, 255, 0.35);
+    animation: ringPulsePrimary 3.2s ease-out infinite;
+  }
+
+  .neuro-avatar-ring-secondary {
+    border: 1px solid rgba(255, 93, 170, 0.45);
+    box-shadow: 0 0 24px rgba(255, 93, 170, 0.3);
+    animation: ringPulseSecondary 3.2s ease-out infinite;
+  }
+}
+
+@keyframes ringPulsePrimary {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.85;
+  }
+  70% {
+    transform: scale(1.08);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.08);
+    opacity: 0;
+  }
+}
+
+@keyframes ringPulseSecondary {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  60% {
+    transform: scale(1.16);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.16);
+    opacity: 0;
+  }
 }
 
 @keyframes auroraShift {
@@ -188,6 +303,10 @@
   }
 
   .aurora-bg,
+  .neuro-neural-overlay,
+  .neuro-wave-line,
+  .neuro-avatar-ring,
+  .neuro-avatar-ring-secondary,
   .section-reveal,
   .status-dot {
     animation: none !important;
@@ -198,5 +317,18 @@
   .icon-hover-float,
   .icon-hover-float:hover {
     transform: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-bg-media {
+    opacity: 0.42;
+    transform: scale(1.04);
+  }
+
+  .hero-bg-overlay {
+    background-image:
+      linear-gradient(180deg, rgba(6, 10, 20, 0.46) 0%, rgba(6, 10, 20, 0.64) 70%, rgba(6, 10, 20, 0.74) 100%),
+      radial-gradient(circle at 50% 16%, rgba(6, 10, 20, 0.12), transparent 48%);
   }
 }
