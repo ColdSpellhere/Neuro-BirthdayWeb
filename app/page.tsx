@@ -44,30 +44,13 @@ export default function HomePage() {
         {/* Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
           <div className="space-y-8 section-reveal">
-            <div className="flex justify-center">
-              <span className="inline-flex items-center rounded-full border border-cyan-300/25 bg-cyan-300/10 px-3 py-1.5 text-xs font-semibold tracking-[0.12em] text-cyan-100">
-                AI 社群线上庆典 · 2026
-              </span>
-            </div>
-
             {/* Title */}
-            <h1 className="font-display text-4xl sm:text-6xl lg:text-8xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-cyan-300 via-sky-300 to-pink-300 bg-clip-text text-transparent">
+            <h1 className="hero-title-glass font-cute text-4xl sm:text-6xl lg:text-8xl font-normal mt-4 sm:mt-4 lg:mt-4 mb-6 leading-tight">
+              <span className="hero-title-top" data-text="Neuro-Sama">
                 Neuro-Sama
               </span>
-              <br />
-              <span className="text-[color:var(--neuro-ink)]">2026 B站社群生日会</span>
+              <span className="hero-title-bottom" data-text="2026 B站社群生日会">2026 B站社群生日会</span>
             </h1>
-
-            {/* Subtitle */}
-            <p className="text-lg sm:text-2xl lg:text-3xl text-gray-200 font-light max-w-4xl mx-auto">
-              AI 奇点庆典，与你同赴未来
-            </p>
-
-            <p className="text-sm sm:text-base text-slate-300/90 max-w-2xl mx-auto">
-              聚焦 AI 创作、社区协作与实时互动体验的年度线上项目。
-              让观众、创作者与志愿者都能更顺畅地参与其中。
-            </p>
 
             {/* Countdown */}
             <div className="py-8">

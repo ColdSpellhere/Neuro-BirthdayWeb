@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Manrope, Space_Grotesk } from "next/font/google"
+import { Manrope, Space_Grotesk, ZCOOL_KuaiLe } from "next/font/google"
 import "./globals.css"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -8,6 +8,12 @@ const manrope = Manrope({ subsets: ["latin"] })
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-display",
+})
+
+const zcoolKuaiLe = ZCOOL_KuaiLe({
+  weight: "400",
+  variable: "--font-cute",
+  preload: false,
 })
 
 export const metadata: Metadata = {
@@ -42,7 +48,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN" className="dark">
-      <body className={`${manrope.className} ${spaceGrotesk.variable} site-background text-slate-50`}>
+      <body className={`${manrope.className} ${spaceGrotesk.variable} ${zcoolKuaiLe.variable} site-background text-slate-50`}>
         <Navbar />
         <main className="min-h-screen">
           {children}

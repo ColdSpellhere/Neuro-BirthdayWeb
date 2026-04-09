@@ -12,11 +12,11 @@ interface TimeLeft {
 
 const TimeCard = memo(function TimeCard({ value, label }: { value: number; label: string }) {
   return (
-    <Card className="glass-effect p-6 text-center hover:neon-glow-pink transition-all">
-      <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent mb-2">
+    <Card className="countdown-glass-card p-7 sm:p-8 text-center hover:neon-glow-pink transition-all min-h-[9.5rem] sm:min-h-[10.5rem]">
+      <div className="text-6xl md:text-7xl leading-none tabular-nums font-bold bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent mb-3">
         {String(value).padStart(2, "0")}
       </div>
-      <div className="text-sm text-gray-400 uppercase tracking-wider">
+      <div className="text-sm sm:text-base text-slate-200/90 uppercase tracking-[0.14em]">
         {label}
       </div>
     </Card>
@@ -64,7 +64,7 @@ export function Countdown() {
   )
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 md:gap-6 max-w-5xl mx-auto">
       {timeUnits.map((unit, index) => (
         <TimeCard key={index} value={unit.value} label={unit.label} />
       ))}
