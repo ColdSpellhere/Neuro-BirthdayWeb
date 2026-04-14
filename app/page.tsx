@@ -19,6 +19,7 @@ export default function HomePage() {
                 alt=""
                 fill
                 priority
+                quality={85}
                 sizes="100vw"
                 className="hero-bg-media hidden md:block"
                 aria-hidden
@@ -27,7 +28,7 @@ export default function HomePage() {
                 src={heroBackground.mobileSrc || heroBackground.desktopSrc}
                 alt=""
                 fill
-                priority
+                quality={82}
                 sizes="100vw"
                 className="hero-bg-media md:hidden"
                 aria-hidden
