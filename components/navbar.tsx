@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 
 const navItems = [
@@ -16,6 +16,10 @@ const navItems = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
+
+  useEffect(() => {
+    setIsOpen(false)
+  }, [pathname])
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl bg-slate-950/70 border-b border-white/10 shadow-[0_8px_30px_rgba(2,6,23,0.35)]">
@@ -59,6 +63,9 @@ export function Navbar() {
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden p-2 rounded-lg hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500/70"
             aria-label="Toggle menu"
+            aria-expanded={isOpen}
+            aria-controls="mobile-navigation"
+            type="button"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -67,7 +74,7 @@ export function Navbar() {
 
       {/* Mobile Navigation Sidebar */}
       {isOpen && (
-        <div className="md:hidden border-t border-white/10 bg-slate-950/90 backdrop-blur-xl">
+        <div id="mobile-navigation" className="md:hidden border-t border-white/10 bg-slate-950/90 backdrop-blur-xl">
           <div className="px-4 py-4 space-y-2">
             {navItems.map((item) => (
               <Link

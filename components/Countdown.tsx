@@ -10,6 +10,8 @@ interface TimeLeft {
   seconds: number
 }
 
+const TARGET_DATE = new Date("2026-12-19T20:00:00+08:00").getTime()
+
 const TimeCard = memo(function TimeCard({ value, label }: { value: number; label: string }) {
   return (
     <Card className="countdown-glass-card p-7 sm:p-8 text-center hover:neon-glow-pink transition-all min-h-[9.5rem] sm:min-h-[10.5rem]">
@@ -24,8 +26,6 @@ const TimeCard = memo(function TimeCard({ value, label }: { value: number; label
 })
 
 export function Countdown() {
-  const targetDate = new Date("2026-12-19T20:00:00+08:00").getTime()
-
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
     hours: 0,
@@ -36,7 +36,7 @@ export function Countdown() {
   useEffect(() => {
     const calculateTimeLeft = () => {
       const now = new Date().getTime()
-      const difference = targetDate - now
+      const difference = TARGET_DATE - now
 
       if (difference > 0) {
         setTimeLeft({
@@ -59,7 +59,7 @@ export function Countdown() {
     const timer = setInterval(calculateTimeLeft, 1000)
 
     return () => clearInterval(timer)
-  }, [targetDate])
+  }, [])
 
   const timeUnits = useMemo(
     () => [
@@ -73,8 +73,8 @@ export function Countdown() {
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5 md:gap-6 max-w-5xl mx-auto">
-      {timeUnits.map((unit, index) => (
-        <TimeCard key={index} value={unit.value} label={unit.label} />
+      {timeUnits.map((unit) => (
+        <TimeCard key={unit.label} value={unit.value} label={unit.label} />
       ))}
     </div>
   )

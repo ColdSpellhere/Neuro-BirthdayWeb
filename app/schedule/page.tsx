@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useMemo, useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Clock, CheckCircle2, Circle } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -146,10 +146,14 @@ export default function SchedulePage() {
     return () => clearInterval(interval)
   }, [])
   
-  const currentBeijingDisplay = formatBeijingDateTime(currentTime);
-  // 按日期分组并排序事件
-  const groupedEvents = groupEventsByDate(scheduleEvents)
-  const sortedDates = Array.from(groupedEvents.keys()).sort()
+  const currentBeijingDisplay = useMemo(
+    () => formatBeijingDateTime(currentTime),
+    [currentTime]
+  )
+
+  // 按日期分组并排序事件，避免每分钟更新时间时重复计算静态数据
+  const groupedEvents = useMemo(() => groupEventsByDate(scheduleEvents), [])
+  const sortedDates = useMemo(() => Array.from(groupedEvents.keys()).sort(), [groupedEvents])
   
   return (
     <div className="min-h-screen py-16 px-4 sm:px-6 sm:py-20 lg:px-8">

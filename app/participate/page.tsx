@@ -78,7 +78,7 @@ export default function ParticipatePage() {
                     asChild
                     >
                       <a
-                        href="https://www.wjx.cn/"
+                        href="https://wj.qq.com/s2/25563205/fh82/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -271,7 +271,7 @@ export default function ParticipatePage() {
                       asChild
                     >
                       <a
-                        href="https://www.wjx.cn/"
+                          href="https://wj.qq.com/s2/25563205/fh82/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -406,7 +406,7 @@ export default function ParticipatePage() {
                       asChild
                     >
                       <a
-                        href="https://www.wjx.cn/"
+                          href="https://wj.qq.com/s2/25563205/fh82/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -480,7 +480,7 @@ export default function ParticipatePage() {
                       asChild
                     >
                       <a
-                        href="https://www.wjx.cn/"
+                          href="https://wj.qq.com/s2/25563205/fh82/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >

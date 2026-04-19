@@ -3,6 +3,7 @@ import { Manrope, Space_Grotesk, ZCOOL_KuaiLe } from "next/font/google"
 import "./globals.css"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import { getSiteUrl } from "@/lib/site"
 
 const manrope = Manrope({ subsets: ["latin"] })
 const spaceGrotesk = Space_Grotesk({
@@ -16,7 +17,10 @@ const zcoolKuaiLe = ZCOOL_KuaiLe({
   preload: false,
 })
 
+const siteUrl = getSiteUrl()
+
 export const metadata: Metadata = {
+  metadataBase: siteUrl,
   title: {
     default: "Neuro-Sama 2026年B站社群生日会",
     template: "%s | Neuro-Sama 2026年B站社群生日会",
@@ -26,6 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Neuro-Sama 2026年B站社群生日会",
     description: "Neuro-Sama 2026年B站社群生日会官方纪念网站，包含活动日程、参与方式与最新公告。",
+    url: "/",
     type: "website",
     locale: "zh_CN",
     images: ["/news/news1-opt.jpg"],

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useEffect, useRef, useCallback } from "react"
+import { useState, useMemo, useEffect, useRef, useCallback, type KeyboardEvent as ReactKeyboardEvent } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -82,6 +82,15 @@ export default function NewsPage() {
   // 点击新闻时打开详情
   const handleNewsClick = (news: typeof newsData[0]) => {
     setSelectedNews(news)
+  }
+
+  const handleCardKeyDown = (
+    event: ReactKeyboardEvent<HTMLDivElement>,
+    news: typeof newsData[0]
+  ) => {
+    if (event.key !== "Enter" && event.key !== " ") return
+    event.preventDefault()
+    handleNewsClick(news)
   }
 
   // Filter and search logic
@@ -216,6 +225,10 @@ export default function NewsPage() {
                   <Card 
                     className="glass-effect hover:neon-glow-pink transition-all h-full cursor-pointer group card-lift"
                     onClick={() => handleNewsClick(news)}
+                    onKeyDown={(event) => handleCardKeyDown(event, news)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`查看新闻：${news.title}`}
                   >
                     <div className="aspect-video bg-gradient-to-br from-pink-600/20 to-purple-600/20 relative overflow-hidden">
                       {news.image ? (
@@ -279,8 +292,10 @@ export default function NewsPage() {
             />
             {searchQuery && (
               <button
+                type="button"
                 onClick={() => handleSearchChange("")}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                aria-label="清空搜索"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -325,6 +340,10 @@ export default function NewsPage() {
                   <Card 
                     className="glass-effect hover:neon-glow-pink transition-all h-full flex flex-col cursor-pointer group card-lift"
                     onClick={() => handleNewsClick(news)}
+                    onKeyDown={(event) => handleCardKeyDown(event, news)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`查看新闻：${news.title}`}
                   >
                     {/* News Image */}
                     <div className="aspect-video bg-gradient-to-br from-slate-800 to-slate-900 relative overflow-hidden">
@@ -371,8 +390,13 @@ export default function NewsPage() {
 
                       {/* Read More Button */}
                       <Button
+                        type="button"
                         variant="ghost"
                         className="mt-auto w-full group/btn"
+                        onClick={(event) => {
+                          event.stopPropagation()
+                          handleNewsClick(news)
+                        }}
                       >
                         查看详情
                         <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
@@ -493,6 +517,7 @@ export default function NewsPage() {
                   </div>
                   <button
                     ref={closeButtonRef}
+                    type="button"
                     onClick={() => setSelectedNews(null)}
                     className="text-gray-400 hover:text-white transition-colors p-2"
                     aria-label="关闭新闻详情"

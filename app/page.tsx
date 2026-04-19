@@ -60,22 +60,22 @@ export default function HomePage() {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center pt-4 max-w-md sm:max-w-none mx-auto">
-              <Link href="/participate">
-                <Button size="lg" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 focus-visible:ring-2 focus-visible:ring-cyan-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
+              <Button size="lg" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 focus-visible:ring-2 focus-visible:ring-cyan-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" asChild>
+                <Link href="/participate">
                   查看详情
                   <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-              </Link>
-              <a
-                href="https://space.bilibili.com/3546729368520811"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button size="lg" variant="ghost" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 border border-cyan-200/30 focus-visible:ring-2 focus-visible:ring-cyan-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
+                </Link>
+              </Button>
+              <Button size="lg" variant="ghost" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 border border-cyan-200/30 focus-visible:ring-2 focus-visible:ring-cyan-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" asChild>
+                <a
+                  href="https://space.bilibili.com/3546729368520811"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   观看直播
                   <ExternalLink className="w-5 h-5 ml-2" />
-                </Button>
-              </a>
+                </a>
+              </Button>
             </div>
           </div>
         </div>
@@ -109,16 +109,16 @@ export default function HomePage() {
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             世界上最先进的 AI VTuber，由 Vedal 创造和开发
           </p>
-          <a
-                href="https://space.bilibili.com/3546729368520811"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button size="lg" variant="ghost" className="w-full sm:w-auto text-lg px-8 border border-cyan-200/30 mt-6 -mb-6 focus-visible:ring-2 focus-visible:ring-cyan-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
+          <Button size="lg" variant="ghost" className="w-full sm:w-auto text-lg px-8 border border-cyan-200/30 mt-6 -mb-6 focus-visible:ring-2 focus-visible:ring-cyan-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950" asChild>
+            <a
+              href="https://space.bilibili.com/3546729368520811"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
                   B站账号
                   <ExternalLink className="w-5 h-5 ml-2" />
-                </Button>
-              </a>
+            </a>
+          </Button>
         </div>
 
         {/* Introduction */}

@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next"
-
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+import { toAbsoluteUrl } from "@/lib/site"
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: toAbsoluteUrl("/sitemap.xml"),
   }
 }
