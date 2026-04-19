@@ -178,7 +178,7 @@
     background-clip: text;
     color: transparent;
     -webkit-text-stroke: 1px rgba(236, 250, 255, 0.26);
-    opacity: 0.78;
+    opacity: 0.68;
     filter: saturate(1.08) brightness(1.06);
     text-shadow:
       0 1px 0 rgba(255, 255, 255, 0.22),
@@ -195,7 +195,7 @@
     background-clip: text;
     color: transparent;
     -webkit-text-stroke: 0.85px rgba(236, 248, 255, 0.22);
-    opacity: 0.74;
+    opacity: 0.64;
     filter: saturate(1.06) brightness(1.05);
     font-size: 0.6em;
     letter-spacing: 0.04em;
@@ -215,7 +215,7 @@
     background-clip: text;
     color: transparent;
     mix-blend-mode: screen;
-    opacity: 0.34;
+    opacity: 0.28;
     transform: translateY(-0.02em);
   }
 

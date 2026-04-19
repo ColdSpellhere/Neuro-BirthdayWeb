@@ -46,7 +46,7 @@ export default function HomePage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
           <div className="space-y-8 section-reveal">
             {/* Title */}
-            <h1 className="hero-title-glass font-cute text-4xl sm:text-6xl lg:text-8xl font-normal mt-4 sm:mt-4 lg:mt-4 mb-6 leading-tight">
+            <h1 className="hero-title-glass font-cute text-5xl sm:text-7xl lg:text-9xl font-normal mt-4 sm:mt-4 lg:mt-4 mb-6 leading-tight">
               <span className="hero-title-top" data-text="Neuro-Sama">
                 Neuro-Sama
               </span>
