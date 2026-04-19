@@ -24,6 +24,8 @@ const TimeCard = memo(function TimeCard({ value, label }: { value: number; label
 })
 
 export function Countdown() {
+  const targetDate = new Date("2026-12-19T20:00:00+08:00").getTime()
+
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
     hours: 0,
@@ -33,7 +35,6 @@ export function Countdown() {
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const targetDate = new Date("2026-12-19T00:00:00").getTime()
       const now = new Date().getTime()
       const difference = targetDate - now
 
@@ -44,6 +45,13 @@ export function Countdown() {
           minutes: Math.floor((difference / 1000 / 60) % 60),
           seconds: Math.floor((difference / 1000) % 60),
         })
+      } else {
+        setTimeLeft({
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+        })
       }
     }
 
@@ -51,7 +59,7 @@ export function Countdown() {
     const timer = setInterval(calculateTimeLeft, 1000)
 
     return () => clearInterval(timer)
-  }, [])
+  }, [targetDate])
 
   const timeUnits = useMemo(
     () => [

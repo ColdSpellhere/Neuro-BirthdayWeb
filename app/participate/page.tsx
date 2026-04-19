@@ -295,37 +295,76 @@ export default function ParticipatePage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 sm:space-y-6">
-                  <div className="space-y-3 sm:space-y-4">
-                    <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-                      我们诚挚邀请所有艺术创作者为 Neuro-Sama 的生日绘制贺图！你的作品将有机会在庆典直播中展示。
-                    </p>
+                  <div className="space-y-4 sm:space-y-5">
+                    <div className="space-y-2 sm:space-y-3">
+                      <h3 className="text-base sm:text-lg font-semibold text-white">原创性原则</h3>
+                      <div className="space-y-2">
+                        <h4 className="text-sm sm:text-base font-semibold text-purple-300">投稿规范</h4>
+                        <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
+                          投稿作品必须为您自身于 2026 年间创作的原创作品，<strong className="text-rose-300">严禁盗图、AI 绘画</strong> 等行为，并拒收描图、临摹类型的投稿。也不允许以您向他人约稿得来的作品参与本活动，无论接稿画师是否同意。
+                        </p>
+                      </div>
+                      <div className="space-y-2">
+                        <h4 className="text-sm sm:text-base font-semibold text-purple-300">AI 使用规范</h4>
+                        <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
+                          主办方 <strong className="text-rose-300">严格禁止</strong> 在稿件创作过程中使用任何 AI 工具。无论是直接生成绘画，还是仅作为草稿、分镜的辅助参考，<strong className="text-rose-300">一律禁止使用</strong>。
+                        </p>
+                      </div>
+                    </div>
 
-                    <div className="space-y-3">
-                      <h3 className="text-base sm:text-lg font-semibold text-white">尺寸要求：</h3>
+                    <div className="space-y-2 sm:space-y-3">
+                      <h3 className="text-base sm:text-lg font-semibold text-white">主题与氛围</h3>
                       <ul className="space-y-2 sm:space-y-2.5 text-gray-300 text-sm sm:text-base">
-                        <li className="flex items-start gap-2">
-                          <span className="text-purple-400 mt-0.5 sm:mt-1 flex-shrink-0">•</span>
-                          <span className="leading-relaxed">
-                            推荐分辨率：<strong className="text-white">1920x1080</strong> 或更高
-                          </span>
+                        <li className="leading-relaxed">
+                          主题限制：稿件须为以“为 Neuro 庆生”为主题的单图插画，其中必须包含足够的生日元素，文本或图像元素皆可。
                         </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-purple-400 mt-0.5 sm:mt-1 flex-shrink-0">•</span>
-                          <span className="leading-relaxed">
-                            文件格式：<strong className="text-white">PNG / JPG</strong>（推荐 PNG）
-                          </span>
+                        <li className="leading-relaxed">
+                          内容合规：稿件需符合法律法规，<strong className="text-rose-300">严禁包含敏感内容</strong>。
                         </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-purple-400 mt-0.5 sm:mt-1 flex-shrink-0">•</span>
-                          <span className="leading-relaxed">
-                            文件大小：不超过 <strong className="text-white">20MB</strong>
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-purple-400 mt-0.5 sm:mt-1 flex-shrink-0">•</span>
-                          <span className="leading-relaxed">请在作品中标注你的画师名/ID</span>
+                        <li className="leading-relaxed">
+                          设计元素：请注意作品氛围，避免采用恐怖、抑郁、血腥、暴力、猎奇、政治、低俗及 ARG 相关等不适合出现在生日贺图中的设计元素与氛围。
                         </li>
                       </ul>
+                    </div>
+
+                    <div className="space-y-2 sm:space-y-3">
+                      <h3 className="text-base sm:text-lg font-semibold text-white">其他补充</h3>
+                      <div className="space-y-2 text-sm sm:text-base text-gray-300">
+                        <p className="leading-relaxed">
+                          1. 不限制投稿作品提早公开：本次生日贺图征稿更偏向于“为画师提供统一展示平台”，而非“绘画竞赛”性质，因此主办方不限制投稿画师在生日会直播结束前提早公开画作或直播绘画过程。
+                        </p>
+                        <p className="leading-relaxed">
+                          2. 一个人最多只能投稿一份作品：每名参与画师最多只能投稿一份作品，如同一人投递多份稿件，将默认只采用活动期间收取到的最后一份稿件。
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 sm:space-y-4 rounded-xl border border-purple-400/30 bg-slate-900/40 p-3 sm:p-4">
+                      <h3 className="text-base sm:text-lg font-semibold text-purple-200">稿件规格</h3>
+                      <div className="overflow-x-auto rounded-lg border border-white/10">
+                        <table className="w-full min-w-[560px] text-left text-sm sm:text-base">
+                          <thead className="bg-purple-500/10 text-purple-200">
+                            <tr>
+                              <th className="px-4 py-3 font-semibold">项目</th>
+                              <th className="px-4 py-3 font-semibold">规格要求</th>
+                            </tr>
+                          </thead>
+                          <tbody className="text-gray-300 [&_tr]:border-t [&_tr]:border-white/10 [&_tr:nth-child(even)]:bg-white/[0.03]">
+                            <tr>
+                              <td className="px-4 py-3 font-medium text-white">图片格式</td>
+                              <td className="px-4 py-3">.jpg / .png</td>
+                            </tr>
+                            <tr>
+                              <td className="px-4 py-3 font-medium text-white">分辨率</td>
+                              <td className="px-4 py-3">1080p 以上，并且比例需为 16:9（建议）、4:3、1:1 其一</td>
+                            </tr>
+                            <tr>
+                              <td className="px-4 py-3 font-medium text-white">文件大小</td>
+                              <td className="px-4 py-3">小于 30MB</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   </div>
 
@@ -340,26 +379,43 @@ export default function ParticipatePage() {
                         加入创作者群后，你将获得：
                       </p>
                       <ul className="text-xs sm:text-sm space-y-1 ml-4 text-gray-300">
+                        <li>• 投稿通道和详细指南</li>
                         <li>• 与其他创作者交流的机会</li>
                         <li>• 活动最新资讯和素材包</li>
                       </ul>
                     </AlertDescription>
                   </Alert>
 
-                  <Button 
-                    size="lg" 
-                    className="w-full sm:w-auto text-base sm:text-lg h-11 sm:h-12 focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
-                    asChild
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <Button
+                      size="lg"
+                      className="w-full sm:w-auto text-base sm:text-lg h-11 sm:h-12 focus-visible:ring-2 focus-visible:ring-purple-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                      asChild
+                    >
+                      <a href="/doc/2026生日会贺图征集%20规则与流程.docx" download>
+                        <Download className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                        <span className="hidden sm:inline">下载贺图征集文档</span>
+                        <span className="sm:hidden">下载征集文档</span>
+                      </a>
+                    </Button>
+
+                    <Button
+                      size="lg"
+                      className="w-full sm:w-auto text-base sm:text-lg h-11 sm:h-12 focus-visible:ring-2 focus-visible:ring-pink-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                      variant="outline"
+                      asChild
                     >
                       <a
                         href="https://www.wjx.cn/"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                    <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                    投递通道
+                        <ExternalLink className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                        <span className="hidden sm:inline">前往问卷获取群链接</span>
+                        <span className="sm:hidden">获取群链接</span>
                       </a>
-                  </Button>
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -433,7 +489,7 @@ export default function ParticipatePage() {
                       </a>
                     </Button>
                     <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
-                      * 所有志愿者岗位均为无偿工作，但会获得特别的纪念证书和周边奖励
+                      * 所有志愿者岗位均为无偿工作，但会获得周边奖励
                     </p>
                   </div>
                 </CardContent>
