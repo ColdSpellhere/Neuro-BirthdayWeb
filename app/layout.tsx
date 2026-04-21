@@ -34,13 +34,13 @@ export const metadata: Metadata = {
     url: "/",
     type: "website",
     locale: "zh_CN",
-    images: ["/news/news1-opt.jpg"],
+    images: ["/news/news1-opt.webp"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Neuro-Sama 2026年B站社群生日会",
     description: "查看生日会日程、参与通道与官方公告。",
-    images: ["/news/news1-opt.jpg"],
+    images: ["/news/news1-opt.webp"],
   },
   alternates: {
     canonical: "/",

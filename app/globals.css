@@ -93,7 +93,6 @@ html[data-perf="lite"] .hero-bg-overlay {
 
 html[data-perf="lite"] .glass-effect,
 html[data-perf="lite"] .glass-panel,
-html[data-perf="lite"] .countdown-glass-card,
 html[data-perf="lite"] .backdrop-blur-xl,
 html[data-perf="lite"] .backdrop-blur-lg {
   backdrop-filter: none !important;
@@ -101,11 +100,21 @@ html[data-perf="lite"] .backdrop-blur-lg {
 }
 
 html[data-perf="lite"] .glass-effect,
-html[data-perf="lite"] .glass-panel,
-html[data-perf="lite"] .countdown-glass-card {
+html[data-perf="lite"] .glass-panel {
   background: rgba(10, 16, 30, 0.82) !important;
   border-color: rgba(148, 163, 184, 0.2) !important;
   box-shadow: 0 8px 20px rgba(2, 6, 23, 0.35) !important;
+}
+
+/* Keep countdown cards translucent while retaining lite-mode performance elsewhere. */
+html[data-perf="lite"] .countdown-glass-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(213, 244, 255, 0.05) 48%, rgba(255, 181, 223, 0.05) 100%) !important;
+  border-color: rgba(204, 234, 255, 0.24) !important;
+  backdrop-filter: blur(6px) saturate(115%) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(115%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 8px 18px rgba(4, 10, 26, 0.2) !important;
 }
 
 html[data-perf="lite"] .card-lift,

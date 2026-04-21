@@ -14,7 +14,7 @@ const newsData = [
     title: "关于本期生日会参与意愿调查问卷",
     date: "2026-01-19",
     category: "公告",
-    image: "/news/news1-opt.jpg",
+    image: "/news/news1-opt.webp",
     excerpt: "致上期生日会全体工作人员：感谢你们在上期 Neuro-Sama 生日庆典中的辛勤付出与卓越表现。本期生日会筹备工作现已启动，我们诚挚邀请各位填写参与意愿调查问卷。",
     content: {
       intro: "致上期生日会全体工作人员：",

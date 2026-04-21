@@ -91,7 +91,7 @@ export default function HomePage() {
               <div className="absolute -inset-2 rounded-full neuro-avatar-ring-secondary" />
               <div className="relative h-full w-full rounded-full overflow-hidden bg-black/10 neuro-avatar-core">
                 <Image
-                  src="/neuro-avatar-opt.jpg"
+                  src="/neuro-avatar-opt.webp"
                   alt="Neuro-Sama"
                   fill
                   sizes="120px"
@@ -178,7 +178,7 @@ export default function HomePage() {
               <Card className="glass-effect hover:neon-glow-pink transition-all cursor-pointer overflow-hidden card-lift">
                 <div className="relative aspect-video bg-gradient-to-br from-slate-800 to-slate-900">
                   <Image
-                    src="/video-cover-2025-opt.jpg"
+                    src="/video-cover-2025-opt.webp"
                     alt="2025年生日会视频"
                     fill
                     sizes="(max-width: 768px) 100vw, 768px"
