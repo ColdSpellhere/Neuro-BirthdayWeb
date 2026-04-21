@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Manrope, Space_Grotesk, ZCOOL_KuaiLe } from "next/font/google"
+import Script from "next/script"
 import "./globals.css"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -54,6 +55,9 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className="dark">
       <body className={`${manrope.className} ${spaceGrotesk.variable} ${zcoolKuaiLe.variable} site-background text-slate-50`}>
+        <Script id="platform-detect" strategy="beforeInteractive">
+          {`(function(){var d=document.documentElement;var ua=navigator.userAgent||"";var platform=(navigator.userAgentData&&navigator.userAgentData.platform)||"";var isWindows=/Windows/i.test(ua)||/Windows/i.test(platform);if(!isWindows){return;}d.setAttribute("data-platform","windows");d.setAttribute("data-perf","lite");})();`}
+        </Script>
         <Navbar />
         <main className="min-h-screen">
           {children}

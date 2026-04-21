@@ -12,6 +12,7 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden site-background neuro-core-hero">
         <div className="pointer-events-none absolute inset-0">
+          <div className="absolute inset-0 hero-bg-placeholder" aria-hidden />
           {heroBackground.enabled ? (
             <>
               <Image
@@ -34,12 +35,10 @@ export default function HomePage() {
                 aria-hidden
               />
             </>
-          ) : (
-            <div className="absolute inset-0 hero-bg-placeholder" aria-hidden />
-          )}
+          ) : null}
           <div className="absolute inset-0 hero-bg-overlay" />
           <div className="absolute inset-0 neuro-neural-overlay" />
-          <div className="absolute left-1/2 top-1/2 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/10 blur-3xl" />
+          <div className="hero-center-glow absolute left-1/2 top-1/2 h-[30rem] w-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/10 blur-3xl" />
         </div>
 
         {/* Content */}

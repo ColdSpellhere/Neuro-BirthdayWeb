@@ -43,6 +43,88 @@
   }
 }
 
+/* Reduce expensive compositing effects on Windows to improve scroll smoothness. */
+html[data-platform="windows"] .site-background {
+  background-attachment: scroll;
+}
+
+html[data-platform="windows"] .glass-effect,
+html[data-platform="windows"] .glass-panel {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+html[data-platform="windows"] .countdown-glass-card {
+  backdrop-filter: blur(8px) saturate(116%);
+  -webkit-backdrop-filter: blur(8px) saturate(116%);
+}
+
+html[data-platform="windows"] .neuro-neural-overlay,
+html[data-platform="windows"] .soft-grid {
+  mask-image: none;
+}
+
+html[data-platform="windows"] .hero-bg-media {
+  filter: saturate(1.04) contrast(1.03) brightness(1.04);
+}
+
+html[data-platform="windows"] .aurora-bg,
+html[data-platform="windows"] .status-dot,
+html[data-platform="windows"] .neuro-avatar-ring,
+html[data-platform="windows"] .neuro-avatar-ring-secondary {
+  animation: none;
+}
+
+/* Aggressive profile: prioritize smooth scrolling over visual effects. */
+html[data-perf="lite"] .site-background {
+  background-image: linear-gradient(160deg, #070d1b 0%, #060a14 55%, #090f1f 100%);
+  background-attachment: scroll !important;
+}
+
+html[data-perf="lite"] .hero-bg-media,
+html[data-perf="lite"] .neuro-neural-overlay,
+html[data-perf="lite"] .soft-grid,
+html[data-perf="lite"] .hero-center-glow {
+  display: none !important;
+}
+
+html[data-perf="lite"] .hero-bg-overlay {
+  background-image: linear-gradient(180deg, rgba(6, 10, 20, 0.42) 0%, rgba(6, 10, 20, 0.66) 64%, rgba(6, 10, 20, 0.78) 100%);
+}
+
+html[data-perf="lite"] .glass-effect,
+html[data-perf="lite"] .glass-panel,
+html[data-perf="lite"] .countdown-glass-card,
+html[data-perf="lite"] .backdrop-blur-xl,
+html[data-perf="lite"] .backdrop-blur-lg {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html[data-perf="lite"] .glass-effect,
+html[data-perf="lite"] .glass-panel,
+html[data-perf="lite"] .countdown-glass-card {
+  background: rgba(10, 16, 30, 0.82) !important;
+  border-color: rgba(148, 163, 184, 0.2) !important;
+  box-shadow: 0 8px 20px rgba(2, 6, 23, 0.35) !important;
+}
+
+html[data-perf="lite"] .card-lift,
+html[data-perf="lite"] .card-lift:hover,
+html[data-perf="lite"] .icon-hover-float,
+html[data-perf="lite"] .icon-hover-float:hover {
+  transition: none !important;
+  transform: none !important;
+}
+
+html[data-perf="lite"] .aurora-bg,
+html[data-perf="lite"] .status-dot,
+html[data-perf="lite"] .neuro-avatar-ring,
+html[data-perf="lite"] .neuro-avatar-ring-secondary,
+html[data-perf="lite"] .section-reveal {
+  animation: none !important;
+}
+
 @layer utilities {
   .font-display {
     font-family: var(--font-display), ui-sans-serif, system-ui, sans-serif;
