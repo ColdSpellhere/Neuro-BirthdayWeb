@@ -4,33 +4,7 @@ import { useMemo, useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Clock, CheckCircle2, Circle } from "lucide-react"
 import { cn } from "@/lib/utils"
-
-/**
- * 日程事件数据模型
- * @property {string} timestamp - 事件开始时间，采用 ISO 8601 格式（UTC+8 北京时间）
- * @property {string} title - 事件标题
- * @property {string} description - 事件描述
- * @property {number} [durationMinutes] - 可选，事件预计持续时间（单位：分钟）。未指定时将使用下个事件开始时间作为结束时间
- * @property {string} [link] - 可选，事件相关链接
- */
-interface ScheduleEvent {
-  timestamp: string
-  title: string
-  description: string
-  durationMinutes?: number
-  link?: string
-}
-
-/** 日程事件数据集合（跨多日） */
-const scheduleEvents: ScheduleEvent[] = [
-  {
-    timestamp: "2026-01-19T23:59:59+08:00",
-    title: "Neuro-Sama 2026年B站社群生日会-前期调查",
-    description: "对上期生日会的工作人员进行本期生日会的参与意愿调查。",
-    durationMinutes: 18720,
-    link: "https://wj.qq.com/s2/25563205/fh82/",
-  },
-]
+import { scheduleEvents, type ScheduleEvent } from "@/data/schedule"
 
 /**
  * 北京时间格式化工具
@@ -112,25 +86,6 @@ function formatDuration(minutes: number): string {
   }
 }
 
-/**
- * 按日期对事件进行分组
- * @param {ScheduleEvent[]} events - 事件数组
- * @returns {Map<string, ScheduleEvent[]>} 日期为键，该日事件数组为值的 Map
- */
-function groupEventsByDate(events: ScheduleEvent[]): Map<string, ScheduleEvent[]> {
-  const grouped = new Map<string, ScheduleEvent[]>()
-  
-  events.forEach((event) => {
-    const { fullDate } = formatBeijingDateTime(event.timestamp)
-    if (!grouped.has(fullDate)) {
-      grouped.set(fullDate, [])
-    }
-    grouped.get(fullDate)!.push(event)
-  })
-  
-  return grouped
-}
-
 export default function SchedulePage() {
   // 在首次渲染就初始化时间，减少页面闪烁
   const [currentTime, setCurrentTime] = useState<Date>(() => new Date())
@@ -151,9 +106,11 @@ export default function SchedulePage() {
     [currentTime]
   )
 
-  // 按日期分组并排序事件，避免每分钟更新时间时重复计算静态数据
-  const groupedEvents = useMemo(() => groupEventsByDate(scheduleEvents), [])
-  const sortedDates = useMemo(() => Array.from(groupedEvents.keys()).sort(), [groupedEvents])
+  // 按时间排序事件，避免每分钟更新时间时重复计算静态数据
+  const sortedEvents = useMemo(
+    () => [...scheduleEvents].sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()),
+    []
+  )
   
   return (
     <div className="min-h-screen py-16 px-4 sm:px-6 sm:py-20 lg:px-8">
@@ -175,46 +132,41 @@ export default function SchedulePage() {
           <div className="hero-divider" />
         </div>
 
-        {/* 按日期分组渲染时间轴 */}
-        {sortedDates.map((dateKey) => {
-          const eventsOnThisDay = groupedEvents.get(dateKey)!
-          const { date } = formatBeijingDateTime(eventsOnThisDay[0].timestamp)
-          
-          return (
-            <div key={dateKey} className="mb-12">
-              {/* 日期标签 */}
-              <div className="mb-8">
-                <div className="flex items-center gap-4">
-                  <div className="glass-effect px-6 py-3 rounded-full border border-pink-500/30">
-                    <span className="text-xl font-bold bg-gradient-to-r from-pink-500 to-cyan-400 bg-clip-text text-transparent">
-                      {date}
-                    </span>
-                  </div>
-                  <div className="flex-1 h-px bg-gradient-to-r from-pink-500/50 to-transparent" />
-                </div>
-              </div>
+        {/* 项目节点时间轴 */}
+        <div className="relative">
+          <div className="absolute left-[3.35rem] top-3 bottom-3 w-px bg-gradient-to-b from-pink-500/60 via-purple-500/50 to-cyan-400/60" />
 
-              {/* 该日期的时间轴容器 */}
-              <div className="relative">
-                {/* 垂直分隔线 */}
-                <div className="absolute left-[24px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-pink-500 via-purple-500 to-cyan-400" />
-
-                {/* 时间轴事件列表 */}
-                <div className="space-y-8">
-                  {eventsOnThisDay.map((event, eventIndex) => {
-                    const nextEvent = eventIndex < eventsOnThisDay.length - 1 
-                      ? eventsOnThisDay[eventIndex + 1] 
+          <div className="space-y-6">
+            {sortedEvents.map((event, eventIndex) => {
+                    const nextEvent = eventIndex < sortedEvents.length - 1 
+                      ? sortedEvents[eventIndex + 1] 
                       : null
                     const status = calculateEventStatus(event, nextEvent, currentTime)
-                    const { time } = formatBeijingDateTime(event.timestamp)
+                    const { fullDate } = formatBeijingDateTime(event.timestamp)
+                    const displayTime = event.timeLabel
+                    const statusLabel = status === "completed" ? "已完成" : status === "active" ? "进行中" : "待开始"
                     
                     return (
-                      <div key={event.timestamp} className="relative flex gap-2 group">
+                      <div key={event.timestamp} className="relative grid grid-cols-[6.75rem_minmax(0,1fr)] gap-4 group">
                         {/* 时间与状态指示器 */}
-                        <div className="flex flex-col items-center gap-2 flex-shrink-0 ml-8">
+                        <div className="flex flex-col items-center gap-2">
+                          <div className={cn(
+                            "w-full rounded-lg border px-3 py-2 text-center transition-colors",
+                            status === "completed" && "border-white/10 bg-slate-900/35 text-gray-500",
+                            status === "active" && "border-pink-400/40 bg-pink-500/15 text-pink-200",
+                            status === "upcoming" && "border-cyan-300/20 bg-slate-900/45 text-cyan-100"
+                          )}>
+                            <div className="text-lg font-bold leading-none tabular-nums">
+                              {displayTime}
+                            </div>
+                            <div className="mt-1 text-[11px] text-slate-400">
+                              {statusLabel}
+                            </div>
+                          </div>
+
                           {/* 状态图标 */}
                           <div className={cn(
-                            "w-8 h-8 rounded-full flex items-center justify-center z-10 transition-all",
+                            "w-8 h-8 rounded-full flex items-center justify-center z-10 transition-all border-2 border-slate-950",
                             status === "completed" && "bg-gray-600",
                             status === "active" && "bg-pink-500 animate-glow ring-4 ring-pink-500/30",
                             status === "upcoming" && "bg-slate-700"
@@ -228,16 +180,6 @@ export default function SchedulePage() {
                             {status === "upcoming" && (
                               <Circle className="w-5 h-5 text-gray-500" />
                             )}
-                          </div>
-
-                          {/* 时间显示 */}
-                          <div className={cn(
-                            "text-sm font-bold px-3 py-1 rounded-full whitespace-nowrap",
-                            status === "completed" && "text-gray-500",
-                            status === "active" && "text-pink-400 bg-pink-500/20",
-                            status === "upcoming" && "text-gray-400"
-                          )}>
-                            {time}
                           </div>
                         </div>
 
@@ -259,6 +201,9 @@ export default function SchedulePage() {
                               {status === "active" && (
                                 <span className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-pink-400 to-cyan-400 rounded-l-lg" />
                               )}
+                              <p className="text-xs text-slate-500 mb-2">
+                                {fullDate}
+                              </p>
                               <h3 className={cn(
                                 "text-xl font-bold mb-2",
                                 status === "completed" && "text-gray-400",
@@ -280,7 +225,7 @@ export default function SchedulePage() {
                               )}>
                                 {event.description}
                               </p>
-                              {event.durationMinutes && (
+                              {event.durationMinutes && event.showDuration !== false && (
                                 <p className="text-xs text-gray-500 mt-2">
                                   预计时长: {formatDuration(event.durationMinutes)}
                                 </p>
@@ -300,6 +245,9 @@ export default function SchedulePage() {
                               {status === "active" && (
                                 <span className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-pink-400 to-cyan-400 rounded-l-lg" />
                               )}
+                              <p className="text-xs text-slate-500 mb-2">
+                                {fullDate}
+                              </p>
                               <h3 className={cn(
                                 "text-xl font-bold mb-2",
                                 status === "completed" && "text-gray-400",
@@ -321,7 +269,7 @@ export default function SchedulePage() {
                               )}>
                                 {event.description}
                               </p>
-                              {event.durationMinutes && (
+                              {event.durationMinutes && event.showDuration !== false && (
                                 <p className="text-xs text-gray-500 mt-2">
                                   预计时长: {formatDuration(event.durationMinutes)}
                                 </p>
@@ -332,12 +280,9 @@ export default function SchedulePage() {
                         )}
                       </div>
                     )
-                  })}
-                </div>
-              </div>
-            </div>
-          )
-        })}
+            })}
+          </div>
+        </div>
 
         {/* 页脚提示 */}
         <div className="mt-16 text-center">

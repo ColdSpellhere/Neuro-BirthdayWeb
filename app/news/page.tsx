@@ -6,68 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, ArrowRight, Search, X, TrendingUp, Filter, ChevronLeft, ChevronRight } from "lucide-react"
 import Image from "next/image"
-
-// 新闻数据
-const newsData = [
-  {
-    id: 1,
-    title: "关于本期生日会参与意愿调查问卷",
-    date: "2026-01-19",
-    category: "公告",
-    image: "/news/news1-opt.webp",
-    excerpt: "致上期生日会全体工作人员：感谢你们在上期 Neuro-Sama 生日庆典中的辛勤付出与卓越表现。本期生日会筹备工作现已启动，我们诚挚邀请各位填写参与意愿调查问卷。",
-    content: {
-      intro: "致上期生日会全体工作人员：",
-      greeting: "感谢你们在上期 Neuro-Sama 生日庆典中的辛勤付出与卓越表现！正是因为有你们的专业协作和热情投入，才让那次活动取得了圆满成功，为所有参与者留下了美好而难忘的回忆。",
-      sections: [
-        {
-          title: "本期生日会筹备启动",
-          content: "随着新一年的到来，Neuro-Sama 的生日庆典筹备工作再次拉开帷幕。我们计划于今年延续以往的精彩传统，同时加入更多创新元素，为粉丝们带来更加精彩纷呈的体验。"
-        },
-        {
-          title: "参与意愿调查",
-          content: "为了更好地组织本期生日会，我们希望了解各位工作人员的参与意愿与时间安排。本次问卷调查主要包含以下内容：",
-          list: [
-            "本期生日会参与意愿",
-            "可投入的时间和精力",
-            "希望负责的志愿者",
-            "对本期活动的建议与期待",
-            "个人能力与特长补充"
-          ]
-        },
-        {
-          title: "问卷填写说明",
-          content: "问卷采用匿名形式，请大家根据自身实际情况如实填写。无论您是否能够参与本期活动，我们都非常感谢您抽出时间填写问卷。您的反馈将帮助我们更合理地安排人员配置，确保活动顺利进行。"
-        },
-        {
-          title: "填写方式",
-          content: "请在2月1日前通过以下方式提交问卷：",
-          link: {
-            text: "Neuro-Sama 2026年B站社群生日会-前期调查",
-            url: "https://wj.qq.com/s2/25563205/fh82/"
-          }
-        },
-        {
-          title: "后续安排",
-          content: "问卷收集完成后，我们将根据大家的反馈进行联系，届时将详细介绍本期生日会的整体方案和具体工作安排。"
-        }
-      ],
-      closing: "再次感谢各位一直以来的支持与付出！期待与大家再次携手，共同打造一场精彩的生日盛典！",
-      signature: "Neuro-Sama 生日会筹备组",
-      date: "2026年1月19日"
-    },
-    categoryColor: "pink" as const,
-    featured: true,  // 设置为精选新闻
-  },
-]
-
-const categoryColors = {
-  pink: "bg-pink-500/20 text-pink-400 border-pink-500/30",
-  cyan: "bg-cyan-400/20 text-cyan-400 border-cyan-400/30",
-  purple: "bg-purple-500/20 text-purple-400 border-purple-500/30",
-}
-
-const categories = ["全部", "公告", "周边", "社区", "活动"]
+import { categories, categoryColors, newsData, type NewsItem } from "@/data/news"
 
 const ITEMS_PER_PAGE = 6
 
@@ -75,18 +14,18 @@ export default function NewsPage() {
   const [selectedCategory, setSelectedCategory] = useState("全部")
   const [searchQuery, setSearchQuery] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
-  const [selectedNews, setSelectedNews] = useState<typeof newsData[0] | null>(null)
+  const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null)
   const modalRef = useRef<HTMLDivElement | null>(null)
   const closeButtonRef = useRef<HTMLButtonElement | null>(null)
 
   // 点击新闻时打开详情
-  const handleNewsClick = (news: typeof newsData[0]) => {
+  const handleNewsClick = (news: NewsItem) => {
     setSelectedNews(news)
   }
 
   const handleCardKeyDown = (
     event: ReactKeyboardEvent<HTMLDivElement>,
-    news: typeof newsData[0]
+    news: NewsItem
   ) => {
     if (event.key !== "Enter" && event.key !== " ") return
     event.preventDefault()
